@@ -10,6 +10,7 @@ namespace CryptoSharp
         public MainWindow()
         {
             InitializeComponent();
+            
         }
     }
 }

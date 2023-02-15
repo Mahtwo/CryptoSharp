@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CryptoSharp
 {
-    internal class Deck
+    public class Deck
     {
 
         private LinkedList<Card> cards = new(); // 52 cards + 2 jokers
@@ -52,11 +52,24 @@ namespace CryptoSharp
         {
             int pos = FindCardPosition(c);
             int newPos = (((pos + direction) % 54) + 54) % 54; // canonical modlulus (work with negative numbers, not native in C#)
-            cards.Remove(c);
             LinkedListNode<Card> node = cards.Find(GetCard(newPos))!;
-            cards.AddBefore(node, c);
-
-            //TODO : add before at position 0 ?
+            cards.Remove(c);
+            if(newPos == 0) // Pos 53 to 0
+            {
+                cards.AddBefore(node, c);
+            }
+            else if (newPos == 53)  // Pos 0 to 53
+            {
+                cards.AddAfter(node, c);
+            }
+            else if (direction > 0)
+            {
+                cards.AddAfter(node, c);
+            }
+            else if(direction < 0)
+            {
+                cards.AddBefore(node, c);
+            }
         }
     }
 }

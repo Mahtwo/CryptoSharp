@@ -1,6 +1,6 @@
 ﻿namespace CryptoSharp
 {
-    enum Card
+    public enum Card
     {
         Clubs_A,
         Clubs_2,
