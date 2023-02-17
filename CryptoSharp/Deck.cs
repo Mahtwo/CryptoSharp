@@ -54,19 +54,11 @@ namespace CryptoSharp
             int newPos = (((pos + direction) % 54) + 54) % 54; // canonical modlulus (work with negative numbers, not native in C#)
             LinkedListNode<Card> node = cards.Find(GetCard(newPos))!;
             cards.Remove(c);
-            if(newPos == 0) // Pos 53 to 0
-            {
-                cards.AddBefore(node, c);
-            }
-            else if (newPos == 53)  // Pos 0 to 53
+            if (direction > 0)
             {
                 cards.AddAfter(node, c);
             }
-            else if (direction > 0)
-            {
-                cards.AddAfter(node, c);
-            }
-            else if(direction < 0)
+            else
             {
                 cards.AddBefore(node, c);
             }

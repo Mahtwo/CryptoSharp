@@ -34,7 +34,7 @@ namespace CryptoSharp.Tests
             Deck localDeck = new();
             Card c = localDeck.GetCard(0);
             localDeck.MoveCard(c, -1);
-            Assert.AreEqual(localDeck.GetCard(53), c);
+            Assert.AreEqual(localDeck.GetCard(52), c);
 
             // Card at position 22
             localDeck = new();
@@ -46,13 +46,13 @@ namespace CryptoSharp.Tests
             localDeck = new();
             c = localDeck.GetCard(53);
             localDeck.MoveCard(c, 1);
-            Assert.AreEqual(localDeck.GetCard(0), c);
+            Assert.AreEqual(localDeck.GetCard(1), c);
 
             // Move card 10 position down
             localDeck = new();
             c = localDeck.GetCard(5);
             localDeck.MoveCard(c, -10);
-            Assert.AreEqual(localDeck.GetCard(48), c);
+            Assert.AreEqual(localDeck.GetCard(48), c); // pos 5 4 3 2 1 0 52 51 50 49 48 --> Move 10
         }
     }
 }
