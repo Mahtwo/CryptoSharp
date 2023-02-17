@@ -63,5 +63,43 @@ namespace CryptoSharp
                 cards.AddBefore(node, c);
             }
         }
+
+        public void DoubleCutting()
+        {
+            // find jokers
+            int posJoker1 = FindCardPosition(Card.Black_Joker);
+            int posJoker2 = FindCardPosition(Card.Red_Joker);
+            if (posJoker1 > posJoker2)
+            {
+                // swap jokers
+                int tmp = posJoker1;
+                posJoker1 = posJoker2;
+                posJoker2 = tmp;
+            }
+
+            // get first part of the deck
+            LinkedList<Card> firstPart = new();
+            for (int i = 0; i < posJoker1; i++)
+            {
+                firstPart.AddLast(GetCard(i));
+            }
+            
+            // get second part of the deck
+            LinkedList<Card> secondPart = new();
+            for (int i = posJoker1; i <= posJoker2; i++)
+            {
+                secondPart.AddLast(GetCard(i));
+            }
+
+            // get third part of the deck
+            LinkedList<Card> thirdPart = new();
+            for (int i = posJoker2 + 1; i < 54; i++)
+            {
+                thirdPart.AddLast(GetCard(i));
+            }
+
+            // rebuild the deck
+            cards = new LinkedList<Card>(thirdPart.Concat(secondPart).Concat(firstPart));
+        }
     }
 }

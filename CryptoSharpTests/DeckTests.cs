@@ -54,5 +54,16 @@ namespace CryptoSharp.Tests
             localDeck.MoveCard(c, -10);
             Assert.AreEqual(localDeck.GetCard(48), c); // pos 5 4 3 2 1 0 52 51 50 49 48 --> Move 10
         }
+
+        [TestMethod()]
+        public void DoubleCuttingTest()
+        {
+            Deck localDeck = new();
+            localDeck.DoubleCutting();
+            Assert.AreEqual(localDeck.GetCard(0), Card.Black_Joker);
+            Assert.AreEqual(localDeck.GetCard(1), Card.Red_Joker);
+            Assert.AreEqual(localDeck.GetCard(2), Card.Clubs_A);
+            Assert.AreEqual(localDeck.GetCard(53), Card.Spades_K);
+        }
     }
 }
