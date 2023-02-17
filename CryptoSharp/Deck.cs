@@ -16,7 +16,7 @@ namespace CryptoSharp
                 cards.AddLast(c);
             }
         }
-
+        
         public Card GetCard(int index)
         {
             return cards.ElementAt(index);
@@ -83,7 +83,7 @@ namespace CryptoSharp
             {
                 firstPart.AddLast(GetCard(i));
             }
-            
+
             // get second part of the deck
             LinkedList<Card> secondPart = new();
             for (int i = posJoker1; i <= posJoker2; i++)
@@ -101,7 +101,7 @@ namespace CryptoSharp
             // rebuild the deck
             cards = new LinkedList<Card>(thirdPart.Concat(secondPart).Concat(firstPart));
         }
-        
+
         public static int GetBridgeNumber(Card c)
         {
             if (c == Card.Black_Joker || c == Card.Red_Joker)
@@ -113,7 +113,7 @@ namespace CryptoSharp
                 return (int)c + 1;
             }
         }
-        
+
         public void SingleCuttingLastCard()
         {
             Card c = GetCard(53);
@@ -139,6 +139,37 @@ namespace CryptoSharp
 
             // rebuild the deck
             cards = new LinkedList<Card>(secondPart.Concat(firstPart).Concat(thirdPart));
+        }
+
+        public bool ReadingBridgeNumberNotJoker()
+        {
+            int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
+            // TODO : DONT KNOW IF +1 OR NOT IN 'bridgeNumberSecondCard'
+            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard + 1)); // = m 
+            return bridgeNumberSecondCard != 53; // false if we have a Joker
+        }
+
+        public int ReadingPseudoRandomLetters()
+        {
+            int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
+            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard + 1)); // = m 
+            if(bridgeNumberSecondCard > 26)
+            {
+                bridgeNumberSecondCard -= 26;
+            }
+            return bridgeNumberSecondCard;
+        }
+
+        public override string ToString()
+        {
+            string str = "";
+            int index = 1;
+            foreach(Card c in cards)
+            {
+                str += index.ToString() + ". " + c.ToString() + "\n";
+                index++;
+            }
+            return str;
         }
     }
 }

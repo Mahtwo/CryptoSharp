@@ -100,6 +100,6 @@ namespace CryptoSharp.Tests
             localDeckShuffle.SingleCuttingLastCard();
             
             Assert.AreEqual(firstCard, localDeckShuffle.GetCard(53 - nbBridge));
-        }
+        }    
     }
 }
