@@ -101,5 +101,44 @@ namespace CryptoSharp
             // rebuild the deck
             cards = new LinkedList<Card>(thirdPart.Concat(secondPart).Concat(firstPart));
         }
+        
+        public static int GetBridgeNumber(Card c)
+        {
+            if (c == Card.Black_Joker || c == Card.Red_Joker)
+            {
+                return 53;
+            }
+            else
+            {
+                return (int)c + 1;
+            }
+        }
+        
+        public void SingleCuttingLastCard()
+        {
+            Card c = GetCard(53);
+            int bridgeNumber = GetBridgeNumber(c);
+
+            // first part
+            LinkedList<Card> firstPart = new();
+            for (int i = 0; i < bridgeNumber; i++)
+            {
+                firstPart.AddLast(GetCard(i));
+            }
+
+            // second part
+            LinkedList<Card> secondPart = new();
+            for (int i = bridgeNumber; i < 53; i++)
+            {
+                secondPart.AddLast(GetCard(i));
+            }
+
+            // third part
+            LinkedList<Card> thirdPart = new();
+            thirdPart.AddLast(GetCard(53));
+
+            // rebuild the deck
+            cards = new LinkedList<Card>(secondPart.Concat(firstPart).Concat(thirdPart));
+        }
     }
 }

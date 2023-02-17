@@ -65,5 +65,41 @@ namespace CryptoSharp.Tests
             Assert.AreEqual(localDeck.GetCard(2), Card.Clubs_A);
             Assert.AreEqual(localDeck.GetCard(53), Card.Spades_K);
         }
+
+        [TestMethod()]
+        public void GetBridgeNumberTest()
+        {
+            Assert.AreEqual(Deck.GetBridgeNumber(Card.Clubs_Q), 12);
+            Assert.AreEqual(Deck.GetBridgeNumber(Card.Black_Joker), 53); // Joker is 53
+            Assert.AreEqual(Deck.GetBridgeNumber(Card.Red_Joker), 53); // Joker is 53
+
+        }
+
+        [TestMethod()]
+        public void SingleCuttingLastCardTest()
+        {
+            // Test without Shuffle
+
+            Deck localDeck = new();
+            Card c = localDeck.GetCard(0);
+            localDeck.MoveCard(c, -1);
+            c = localDeck.GetCard(53);
+            localDeck.MoveCard(c, 1);
+            localDeck.SingleCuttingLastCard();
+            
+            Assert.AreEqual(localDeck.GetCard(52), Card.Clubs_2);
+            Assert.AreEqual(localDeck.GetCard(0), Card.Red_Joker);
+
+            // Test with Shuffle
+            
+            Deck localDeckShuffle = new();
+            localDeckShuffle.Shuffle();
+            Card cShuffle = localDeckShuffle.GetCard(53);
+            int nbBridge = Deck.GetBridgeNumber(cShuffle);
+            Card firstCard = localDeckShuffle.GetCard(0);
+            localDeckShuffle.SingleCuttingLastCard();
+            
+            Assert.AreEqual(firstCard, localDeckShuffle.GetCard(53 - nbBridge));
+        }
     }
 }
