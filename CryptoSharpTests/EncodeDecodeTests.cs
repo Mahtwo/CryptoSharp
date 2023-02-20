@@ -11,18 +11,6 @@ namespace CryptoSharp.Tests
     [TestClass()]
     public class EncodeDecodeTests
     {
-        //[TestMethod()]
-        //public void EncodeMessageTest()
-        //{
-        //    Assert.Fail();
-        //}
-
-        //[TestMethod()]
-        //public void DecodeMessageTest()
-        //{
-        //    Assert.Fail();
-        //}
-
         [TestMethod()]
         public void AlphabetToIntTest()
         {
@@ -41,6 +29,26 @@ namespace CryptoSharp.Tests
             int i2 = 26;
             Assert.AreEqual(EncodeDecode.IntToAlphabet(i1), 'A');
             Assert.AreEqual(EncodeDecode.IntToAlphabet(i2), 'Z');
+        }
+
+        [TestMethod()]
+        public void EncodeMessageTest()
+        {
+            string inputMessage = "ABA";
+            int[] key = new int[] { 1, 2, 26 };
+            string expected = "BDA";
+            string actual = EncodeDecode.EncodeMessage(inputMessage, key);
+            Assert.AreEqual(actual, expected);
+        }
+
+        [TestMethod()]
+        public void DecodeMessageTest()
+        {
+            string inputMessage = "BDA";
+            int[] key = new int[] { 1, 2, 26 };
+            string expected = "ABA";
+            string actual = EncodeDecode.DecodeMessage(inputMessage, key);
+            Assert.AreEqual(actual, expected);
         }
     }
 }

@@ -56,8 +56,6 @@ namespace CryptoSharp
             Console.WriteLine("Original Message : " + message);
             Console.WriteLine("Key : " + key);
             Console.WriteLine("Encoded Message : " + encodedMessage);
-            Console.WriteLine("DEBUG : " + (int)'B');
-            
             Console.WriteLine("Decoded Message : " + decodedMessage);
         }
     }

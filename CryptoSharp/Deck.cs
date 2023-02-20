@@ -144,7 +144,6 @@ namespace CryptoSharp
         public bool ReadingBridgeNumberNotJoker()
         {
             int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
-            // TODO : DONT KNOW IF +1 OR NOT IN 'bridgeNumberSecondCard'
             int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m 
             return bridgeNumberSecondCard != 53; // false if we have a Joker
         }
