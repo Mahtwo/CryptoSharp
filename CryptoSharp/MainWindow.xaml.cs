@@ -1,7 +1,9 @@
 ﻿using System.Windows;
-using System.Collections.Generic;
 using System;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Reflection.Emit;
+using System.Windows.Media;
 
 namespace CryptoSharp
 {
@@ -66,7 +68,10 @@ namespace CryptoSharp
             }
         }
 
-        private void CardsList_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        bool dropDown = false;
+        int currentIndex = -1;
+
+        private void CardsList_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (cardsList.SelectedItem == null)
             {
@@ -74,23 +79,53 @@ namespace CryptoSharp
             }
             DragDrop.DoDragDrop(cardsList, cardsList.SelectedItem, DragDropEffects.Move);
             Console.WriteLine(cardsList.SelectedItem + " is selected");
-        }
 
+            dropDown = true;
+        }
+        
         private void CardsList_DragOver(object sender, DragEventArgs e)
         {
+
             e.Effects = DragDropEffects.Move;
             Console.WriteLine(cardsList.SelectedItem + " is dragOver");
-        }
 
-        private void CardsList_Drop(object sender, DragEventArgs e)
+            DependencyObject? item = VisualTreeHelper.HitTest(cardsList, Mouse.GetPosition(cardsList)).VisualHit;
+
+            // find ListViewItem (or null)
+            while (item != null && !(item is ListBoxItem))
+                item = VisualTreeHelper.GetParent(item);
+
+            if (item != null)
+            {
+                int i = cardsList.Items.IndexOf(((ListBoxItem)item).DataContext);
+                Console.WriteLine(string.Format("I'm on item {0}", i));
+                currentIndex = i;
+            }
+        }
+        
+        public void CardsList_OnMouseMove(object sender, MouseEventArgs e)
         {
-            Console.WriteLine(cardsList.SelectedItem + " is drop");
-            //Point point = cardsList.PointToScreen(new Point(e.GetPosition(cardsList).X, e.GetPosition(cardsList).Y));
-            //int index = cardsList.IndexFromPoint(point);
-            //if (index < 0) index = cardsList.Items.Count - 1;
-            //object data = e.Data.GetData(typeof(DateTime));
-            //cardsList.Items.Remove(data);
-            //cardsList.Items.Insert(index, data);
+            DependencyObject? item = VisualTreeHelper.HitTest(cardsList, Mouse.GetPosition(cardsList)).VisualHit;
+
+            // find ListViewItem (or null)
+            while (item != null && !(item is ListBoxItem))
+                item = VisualTreeHelper.GetParent(item);
+
+            if (item != null)
+            {
+                int i = cardsList.Items.IndexOf(((ListBoxItem)item).DataContext);
+                Console.WriteLine(string.Format("I'm on item {0}", i));
+                currentIndex = i;
+            }
+
+            if (dropDown)
+            {
+                var elem = cardsList.SelectedItem;
+                cardsList.Items.Remove(elem);
+                cardsList.Items.Insert(currentIndex, elem);
+                dropDown = false;
+            }
         }
     }
 }
+

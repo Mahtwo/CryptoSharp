@@ -19,7 +19,7 @@
         <!-- Cards List -->
         <DockPanel Grid.Column="0" Margin="10">
             <Label x:Name="labelCardsList" Content="Cards" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-            <ListBox x:Name="cardsList" DockPanel.Dock="Bottom" DragOver="CardsList_DragOver" Drop="CardsList_Drop" MouseDown="CardsList_MouseDown" AllowDrop="True" />
+            <ListBox x:Name="cardsList" DockPanel.Dock="Bottom" DragOver="CardsList_DragOver" MouseDown="CardsList_MouseDown" AllowDrop="True" MouseMove="CardsList_OnMouseMove" />
         </DockPanel>
         
 
