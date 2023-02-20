@@ -145,14 +145,14 @@ namespace CryptoSharp
         {
             int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
             // TODO : DONT KNOW IF +1 OR NOT IN 'bridgeNumberSecondCard'
-            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard + 1)); // = m 
+            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m 
             return bridgeNumberSecondCard != 53; // false if we have a Joker
         }
 
         public int ReadingPseudoRandomLetters()
         {
             int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
-            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard + 1)); // = m 
+            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m 
             if(bridgeNumberSecondCard > 26)
             {
                 bridgeNumberSecondCard -= 26;
