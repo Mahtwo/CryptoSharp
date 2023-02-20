@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Collections.Generic;
 using System;
+using System.Windows.Controls;
 
 namespace CryptoSharp
 {
@@ -57,6 +58,39 @@ namespace CryptoSharp
             Console.WriteLine("Key : " + key);
             Console.WriteLine("Encoded Message : " + encodedMessage);
             Console.WriteLine("Decoded Message : " + decodedMessage);
+
+
+            for(int i = 0; i < 54; i++)
+            {
+                cardsList.Items.Add(i);
+            }
+        }
+
+        private void CardsList_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (cardsList.SelectedItem == null)
+            {
+                return;
+            }
+            DragDrop.DoDragDrop(cardsList, cardsList.SelectedItem, DragDropEffects.Move);
+            Console.WriteLine(cardsList.SelectedItem + " is selected");
+        }
+
+        private void CardsList_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Move;
+            Console.WriteLine(cardsList.SelectedItem + " is dragOver");
+        }
+
+        private void CardsList_Drop(object sender, DragEventArgs e)
+        {
+            Console.WriteLine(cardsList.SelectedItem + " is drop");
+            //Point point = cardsList.PointToScreen(new Point(e.GetPosition(cardsList).X, e.GetPosition(cardsList).Y));
+            //int index = cardsList.IndexFromPoint(point);
+            //if (index < 0) index = cardsList.Items.Count - 1;
+            //object data = e.Data.GetData(typeof(DateTime));
+            //cardsList.Items.Remove(data);
+            //cardsList.Items.Insert(index, data);
         }
     }
 }
