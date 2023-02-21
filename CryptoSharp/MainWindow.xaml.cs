@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -73,6 +74,7 @@ namespace CryptoSharp
             if (cardsList.SelectedItem != null)
             {
                 DragDrop.DoDragDrop(cardsList, cardsList.SelectedItem, DragDropEffects.Move | DragDropEffects.None);
+                cardsList.Items.Refresh(); // Needed to refresh the visual offset of the dragged card
             }
         }
 
@@ -83,10 +85,16 @@ namespace CryptoSharp
             // Allow dropping only if it is a card (string)
             if (e.Data.GetDataPresent(typeof(string))) // Data can be converted to string
             {
-                string cardUnderscore = ((string)e.Data.GetData(typeof(string))).Replace(' ', '_');
+                string card = (string)e.Data.GetData(typeof(string));
+                string cardUnderscore = card.Replace(' ', '_');
                 if (Enum.IsDefined(typeof(Card), cardUnderscore)) // Data can be converted to card
                 {
                     e.Effects = DragDropEffects.Move;
+
+                    // Change the visual offset of the dragged card to the cursor position
+                    ListBoxItem item = (ListBoxItem)cardsList.ItemContainerGenerator.ContainerFromItem(card);
+                    Point cursorPositionWindow = e.GetPosition(cardsList);
+                    item.GetType().GetProperty("VisualOffset", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(item, new Vector(cursorPositionWindow.X, cursorPositionWindow.Y)); // VisualOffset is a protected property
 
                     return;
                 }
