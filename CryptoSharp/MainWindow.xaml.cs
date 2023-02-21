@@ -1,6 +1,5 @@
-﻿using System.Windows;
-using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -22,7 +21,7 @@ namespace CryptoSharp
                 string cardSpace = c.ToString().Replace('_', ' ');
                 cardsList.Items.Add(cardSpace);
             }
-            
+
             // 1. CREATE MESSAGE TO ENCODE
             string message = "ILOVERACLETTE";
 
@@ -84,11 +83,11 @@ namespace CryptoSharp
             // Allow dropping only if it is a card (string)
             if (e.Data.GetDataPresent(typeof(string))) // Data can be converted to string
             {
-                string cardUnderscore = ((string)e.Data.GetData(typeof(string)) ).Replace(' ', '_');
+                string cardUnderscore = ((string)e.Data.GetData(typeof(string))).Replace(' ', '_');
                 if (Enum.IsDefined(typeof(Card), cardUnderscore)) // Data can be converted to card
                 {
                     e.Effects = DragDropEffects.Move;
-                    
+
                     return;
                 }
             }
@@ -108,11 +107,11 @@ namespace CryptoSharp
                 if (itemOnCursor != null)
                 {
                     // Get the index of the item on the cursor
-                    DependencyObject listBoxItemDO = (DependencyObject) itemOnCursor;
+                    DependencyObject listBoxItemDO = (DependencyObject)itemOnCursor;
                     while (listBoxItemDO.GetType() != typeof(ListBoxItem))
                     {
                         listBoxItemDO = VisualTreeHelper.GetParent(listBoxItemDO);
-                        
+
                         // If we can't get the ListBoxItem, stop the method
                         if (listBoxItemDO == null)
                         {
@@ -123,7 +122,7 @@ namespace CryptoSharp
                     int indexAtCursor = cardsList.ItemContainerGenerator.IndexFromContainer(listBoxItemDO);
 
                     // If cursor is in the upper half, then insert the card "on top", else insert "below"
-                    ListBoxItem listBoxItem = (ListBoxItem) listBoxItemDO;
+                    ListBoxItem listBoxItem = (ListBoxItem)listBoxItemDO;
                     Point cursorPositionListBoxItem = e.GetPosition(listBoxItem); // Get cursor position relative to the item
                     double listBoxItemHeight = listBoxItem.ActualHeight;
                     if (cursorPositionListBoxItem.Y < listBoxItemHeight / 2)

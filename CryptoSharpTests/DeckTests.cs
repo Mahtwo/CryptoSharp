@@ -1,11 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CryptoSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace CryptoSharp.Tests
 {
@@ -86,20 +79,20 @@ namespace CryptoSharp.Tests
             c = localDeck.GetCard(53);
             localDeck.MoveCard(c, 1);
             localDeck.SingleCuttingLastCard();
-            
+
             Assert.AreEqual(localDeck.GetCard(52), Card.Clubs_2);
             Assert.AreEqual(localDeck.GetCard(0), Card.Red_Joker);
 
             // Test with Shuffle
-            
+
             Deck localDeckShuffle = new();
             localDeckShuffle.Shuffle();
             Card cShuffle = localDeckShuffle.GetCard(53);
             int nbBridge = Deck.GetBridgeNumber(cShuffle);
             Card firstCard = localDeckShuffle.GetCard(0);
             localDeckShuffle.SingleCuttingLastCard();
-            
+
             Assert.AreEqual(firstCard, localDeckShuffle.GetCard(53 - nbBridge));
-        }    
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace CryptoSharp
                 cards.AddLast(c);
             }
         }
-        
+
         public Card GetCard(int index)
         {
             return cards.ElementAt(index);
@@ -152,7 +152,7 @@ namespace CryptoSharp
         {
             int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
             int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m 
-            if(bridgeNumberSecondCard > 26)
+            if (bridgeNumberSecondCard > 26)
             {
                 bridgeNumberSecondCard -= 26;
             }
@@ -163,7 +163,7 @@ namespace CryptoSharp
         {
             string str = "";
             int index = 1;
-            foreach(Card c in cards)
+            foreach (Card c in cards)
             {
                 str += index.ToString() + ". " + c.ToString() + "\n";
                 index++;

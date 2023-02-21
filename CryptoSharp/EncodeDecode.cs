@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CryptoSharp
+﻿namespace CryptoSharp
 {
     public class EncodeDecode
     {
@@ -49,7 +43,7 @@ namespace CryptoSharp
             }
             return decodedMessage;
         }
-        
+
         public static int AlphabetToInt(char c)
         {
             return char.ToUpper(c) - 64;
