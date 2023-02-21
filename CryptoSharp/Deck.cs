@@ -17,6 +17,11 @@ namespace CryptoSharp
             }
         }
 
+        public Deck(LinkedList<Card> cards)
+        {
+            this.cards = cards;
+        }
+
         public Card GetCard(int index)
         {
             return cards.ElementAt(index);
@@ -72,9 +77,7 @@ namespace CryptoSharp
             if (posJoker1 > posJoker2)
             {
                 // swap jokers
-                int tmp = posJoker1;
-                posJoker1 = posJoker2;
-                posJoker2 = tmp;
+                (posJoker2, posJoker1) = (posJoker1, posJoker2);
             }
 
             // get first part of the deck

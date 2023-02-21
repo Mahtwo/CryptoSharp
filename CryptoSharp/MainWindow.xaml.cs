@@ -1,7 +1,9 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace CryptoSharp
@@ -11,9 +13,11 @@ namespace CryptoSharp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Deck deck = new();
+
         public MainWindow()
         {
-            // 0. INITIALIZE WINDOW 
+            // Initialize window
             InitializeComponent();
             cardsList.AddHandler(ListBox.MouseDownEvent, new System.Windows.Input.MouseButtonEventHandler(CardsList_MouseDown), true);
             // Add cards to cardsList
@@ -22,54 +26,9 @@ namespace CryptoSharp
                 string cardSpace = c.ToString().Replace('_', ' ');
                 cardsList.Items.Add(cardSpace);
             }
-
-            // 1. CREATE MESSAGE TO ENCODE
-            string message = "ILOVERACLETTE";
-
-            // 2. CREATE DECK 
-            Deck deck = new();
-            //deck.Shuffle();
-
-            // 3. FILL DICTIONNARY WITH CARD VALUES
-
-            int[] encodeKey = new int[message.Length];
-
-            for (int i = 0; i < message.Length; i++)
-            {
-                bool readingBridgeNumberNotJokerOk = false;
-                while (!readingBridgeNumberNotJokerOk)
-                {
-                    deck.MoveCard(Card.Black_Joker, 1);
-                    deck.MoveCard(Card.Red_Joker, 2);
-                    deck.DoubleCutting();
-                    deck.SingleCuttingLastCard();
-                    readingBridgeNumberNotJokerOk = deck.ReadingBridgeNumberNotJoker();
-                }
-                int letterValue = deck.ReadingPseudoRandomLetters();
-                encodeKey[i] = letterValue;
-            }
-
-            // 4. ENCODE MESSAGE
-            string encodedMessage = EncodeDecode.EncodeMessage(message, encodeKey);
-
-            // 5. DECODE MESSAGE
-            string decodedMessage = EncodeDecode.DecodeMessage(encodedMessage, encodeKey);
-
-            // 6. CREATE STRING KEY TO DISPLAY IT
-            string key = "";
-            for (int i = 0; i < message.Length; i++)
-            {
-                key += EncodeDecode.IntToAlphabet(encodeKey[i]);
-            }
-
-            // 7. DISPLAY - CHECK IF ALL OK
-            Console.WriteLine("Original Message : " + message);
-            Console.WriteLine("Key : " + key);
-            Console.WriteLine("Encoded Message : " + encodedMessage);
-            Console.WriteLine("Decoded Message : " + decodedMessage);
         }
 
-        private void CardsList_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void CardsList_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (cardsList.SelectedItem != null)
             {
@@ -154,6 +113,125 @@ namespace CryptoSharp
                     }
                 }
             }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "")
+            {
+                textBox.Foreground = Brushes.Gray;
+                if (textBox.Name == "inputEncodeMessage")
+                {
+                    textBox.Text = "Enter your message to encode";
+                }
+                else if (textBox.Name == "inputDecodeMessage")
+                {
+                    textBox.Text = "Enter your message to decode";
+                }
+            }
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Foreground == Brushes.Gray)
+            {
+                textBox.Foreground = Brushes.Black;
+                textBox.Text = "";
+            }
+        }
+
+        private int[] GetKeyFromCardsList(string message)
+        {
+            // get all cards in ListBox
+            LinkedList<Card> cardsListLinkedList = new();
+
+            foreach (string card in cardsList.Items)
+            {
+                string cardUnderscore = card.Replace(' ', '_');
+                cardsListLinkedList.AddLast((Card)Enum.Parse(typeof(Card), cardUnderscore));
+            }
+            deck = new Deck(cardsListLinkedList);
+
+            // create the key
+            int[] encodeKey = new int[message.Length];
+
+            for (int i = 0; i < message.Length; i++)
+            {
+                bool readingBridgeNumberNotJokerOk = false;
+                while (!readingBridgeNumberNotJokerOk)
+                {
+                    deck.MoveCard(Card.Black_Joker, 1);
+                    deck.MoveCard(Card.Red_Joker, 2);
+                    deck.DoubleCutting();
+                    deck.SingleCuttingLastCard();
+                    readingBridgeNumberNotJokerOk = deck.ReadingBridgeNumberNotJoker();
+                }
+                int letterValue = deck.ReadingPseudoRandomLetters();
+                encodeKey[i] = letterValue;
+            }
+            return encodeKey;
+        }
+
+        private void ButtonEncodeMessage_Click(object sender, RoutedEventArgs e)
+        {
+            // Check if message exists
+            string message = inputEncodeMessage.Text;
+            if (message == "" || message == "Enter your message to encode")
+            {
+                return;
+            }
+
+            // Encode
+            int[] encodeKey = GetKeyFromCardsList(message);
+            string encodedMessage = EncodeDecode.EncodeMessage(message, encodeKey);
+            inputDecodeMessage.Text = encodedMessage;
+            inputDecodeMessage.Foreground = Brushes.Black;
+            inputEncodeMessage.Foreground = Brushes.Gray;
+
+
+            // Display in terminal
+            string key = "";
+            for (int i = 0; i < message.Length; i++)
+            {
+                key += EncodeDecode.IntToAlphabet(encodeKey[i]);
+            }
+            Console.WriteLine("----------------------");
+            Console.WriteLine("You Encode a message : ");
+            Console.WriteLine("Original Message : " + message);
+            Console.WriteLine("Key : " + key);
+            Console.WriteLine("Encoded Message : " + encodedMessage);
+        }
+
+        private void ButtonDecodeMessage_Click(object sender, RoutedEventArgs e)
+        {
+            // Check if message exists
+            string message = inputDecodeMessage.Text;
+            if (message == "" || message == "Enter your message to decode")
+            {
+                return;
+            }
+
+            // Decode
+            int[] encodeKey = GetKeyFromCardsList(message);
+            string decodedMessage = EncodeDecode.DecodeMessage(message, encodeKey);
+            inputEncodeMessage.Text = decodedMessage;
+            inputEncodeMessage.Foreground = Brushes.Black;
+            inputDecodeMessage.Foreground = Brushes.Gray;
+
+            // Display in terminal
+            string key = "";
+            for (int i = 0; i < message.Length; i++)
+            {
+                key += EncodeDecode.IntToAlphabet(encodeKey[i]);
+            }
+
+            Console.WriteLine("----------------------");
+            Console.WriteLine("You Decode a message : ");
+            Console.WriteLine("Encoded Message : " + message);
+            Console.WriteLine("Key : " + key);
+            Console.WriteLine("Decoded Message : " + decodedMessage);
         }
     }
 }

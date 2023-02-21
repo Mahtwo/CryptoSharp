@@ -5,7 +5,7 @@ namespace CryptoSharp.Tests
     [TestClass()]
     public class DeckTests
     {
-        private Deck deck = new();
+        private readonly Deck deck = new();
 
         [TestMethod()]
         public void GetCardTest()
