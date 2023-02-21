@@ -51,7 +51,7 @@ namespace CryptoSharp
         public void MoveCard(Card c, int direction) // direction -1 is down | direction +1 is up
         {
             int pos = FindCardPosition(c);
-            int newPos = (((pos + direction) % 54) + 54) % 54; // canonical modlulus (work with negative numbers, not native in C#)
+            int newPos = (((pos + direction) % 54) + 54) % 54; // canonical modulus (work with negative numbers, not native in C#)
             LinkedListNode<Card> node = cards.Find(GetCard(newPos))!;
             cards.Remove(c);
             if (direction > 0)
