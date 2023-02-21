@@ -118,8 +118,8 @@ namespace CryptoSharp
                             return;
                         }
                     }
-                    cardsList.Items.Remove(card); // Remove the dragged card from the list
                     int indexAtCursor = cardsList.ItemContainerGenerator.IndexFromContainer(listBoxItemDO);
+                    cardsList.Items.Remove(card); // Remove the dragged card from the list
 
                     // If cursor is in the upper half, then insert the card "on top", else insert "below"
                     ListBoxItem listBoxItem = (ListBoxItem)listBoxItemDO;
@@ -132,8 +132,17 @@ namespace CryptoSharp
                     }
                     else
                     {
-                        // Inserting the card below the item at the cursor position
-                        cardsList.Items.Insert(indexAtCursor + 1, card);
+                        // Check if we're not inserting below the last card (index out of range)
+                        if (cardsList.Items.Count < indexAtCursor + 1)
+                        {
+                            // Inserting the card at the end of the list
+                            cardsList.Items.Add(card);
+                        }
+                        else
+                        {
+                            // Inserting the card below the item at the cursor position
+                            cardsList.Items.Insert(indexAtCursor + 1, card);
+                        }
                     }
                 }
             }
