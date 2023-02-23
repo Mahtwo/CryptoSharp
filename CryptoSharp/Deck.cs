@@ -142,7 +142,10 @@ namespace CryptoSharp
         public bool ReadingBridgeNumberNotJoker()
         {
             int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
-            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m 
+            // We want the card at "bridgeNumberFirstCard + 1",
+            // however bridgeNumberFirstCard returns between 1 and 53 included AND our index starts at 0,
+            // So we are basically doing "bridgeNumberFirstCard + 1 - 1"
+            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m
             return bridgeNumberSecondCard != 53; // false if we have a Joker
         }
 
