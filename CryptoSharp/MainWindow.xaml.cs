@@ -54,8 +54,26 @@ namespace CryptoSharp
 
                     // Change the visual offset of the dragged card to the cursor position
                     ListBoxItem item = (ListBoxItem)cardsList.ItemContainerGenerator.ContainerFromItem(card);
-                    Point cursorPositionWindow = e.GetPosition(cardsList);
-                    item.GetType().GetProperty("VisualOffset", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(item, new Vector(cursorPositionWindow.X, cursorPositionWindow.Y)); // VisualOffset is a protected property
+                    Point cursorPositionCardsList = e.GetPosition(cardsList);
+                    item.GetType().GetProperty("VisualOffset", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(item, new Vector(cursorPositionCardsList.X, cursorPositionCardsList.Y)); // VisualOffset is a protected property
+
+                    // Scroll the list if dragging near the top or bottom
+                    const double scrollPercentage = 0.1; // If cursor is within this percentage of the top or bottom, scroll
+                    double maxHeightScrollTop = cardsList.ActualHeight * scrollPercentage;
+                    double minHeightScrollBottom = cardsList.ActualHeight * (1 - scrollPercentage);
+
+                    ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(cardsList, 0), 0);
+                    if (cursorPositionCardsList.Y < maxHeightScrollTop)
+                    {
+                        // Scroll to the top
+                        // ScrollToVerticalOffset allow values outside the range 0 to .ScrollableHeight
+                        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - 1);
+                    }
+                    else if (cursorPositionCardsList.Y > minHeightScrollBottom)
+                    {
+                        // Scroll to the bottom
+                        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + 1);
+                    }
 
                     return;
                 }
@@ -295,7 +313,7 @@ namespace CryptoSharp
             foreach (Card c in cardsListLinkedList)
             {
                 string cardSpace = c.ToString().Replace('_', ' ');
-                
+
                 cardsList.Items.Add(cardSpace);
             }
         }
