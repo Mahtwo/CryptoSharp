@@ -151,7 +151,7 @@ namespace CryptoSharp
             foreach (string card in cardsList.Items)
             {
                 string cardUnderscore = card.Replace(' ', '_');
-                cardsListLinkedList.AddLast((Card)Enum.Parse(typeof(Card), cardUnderscore));
+                cardsListLinkedList.AddLast(Enum.Parse<Card>(cardUnderscore));
             }
             deck = new Deck(cardsListLinkedList);
 
@@ -244,7 +244,7 @@ namespace CryptoSharp
             {
                 // Build the new text (uppercase letters only)
                 string currentText = textBox.Text;
-                StringBuilder newTextBuilder = new StringBuilder();
+                StringBuilder newTextBuilder = new();
                 int removedCharacters = 0;
                 foreach (char letter in currentText)
                 {
