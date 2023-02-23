@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -271,6 +272,31 @@ namespace CryptoSharp
                     textBox.CaretIndex = caretPosition - removedCharacters;
                     textBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
                 }
+            }
+        }
+
+        private void ButtonShuffle_Click(object sender, RoutedEventArgs e)
+        {
+            // get all cards in ListBox
+            LinkedList<Card> cardsListLinkedList = new();
+
+            foreach (string card in cardsList.Items)
+            {
+                string cardUnderscore = card.Replace(' ', '_');
+                cardsListLinkedList.AddLast(Enum.Parse<Card>(cardUnderscore));
+            }
+
+            // Shuffle all cards
+            Random rnd = new();
+            cardsListLinkedList = new LinkedList<Card>(cardsListLinkedList.OrderBy(x => rnd.Next()));
+
+            // Reasign cards to ListBox
+            cardsList.Items.Clear();
+            foreach (Card c in cardsListLinkedList)
+            {
+                string cardSpace = c.ToString().Replace('_', ' ');
+                
+                cardsList.Items.Add(cardSpace);
             }
         }
     }

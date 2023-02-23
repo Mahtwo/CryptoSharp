@@ -90,7 +90,8 @@
         <!-- CARDS LIST -->
         <DockPanel Grid.Column="0" Margin="10">
             <Label x:Name="labelCardsList" Content="Cards" HorizontalAlignment="Center" DockPanel.Dock="Top" Foreground="#FAFAFA"/>
-            <ListBox x:Name="cardsList" DockPanel.Dock="Bottom" AllowDrop="True" DragEnter="CardsList_DragEnterOver" DragOver="CardsList_DragEnterOver" Drop="CardsList_Drop" Background="#1e1e1e" Foreground="#FAFAFA">
+            <Button x:Name="buttonShuffle" DockPanel.Dock="Bottom" Content="Shuffle" Click="ButtonShuffle_Click" Style="{StaticResource btn}" Margin="0 10 0 0 " />
+            <ListBox x:Name="cardsList" AllowDrop="True" DragEnter="CardsList_DragEnterOver" DragOver="CardsList_DragEnterOver" Drop="CardsList_Drop" Background="#1e1e1e" Foreground="#FAFAFA">
                 <ListBox.Resources>
                     <!-- CUSTOMIZE LISTBOX BORDER -->
                     <Style TargetType="Border">
@@ -117,7 +118,7 @@
                         </Setter>
                     </Style>
                 </ListBox.Resources>
-                
+
                 <!-- CUSTOMIZE LISTBOX ITEMS -->
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
@@ -129,7 +130,7 @@
                                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                                             Background="{TemplateBinding Panel.Background}"
                                             Name="Bd"
-                                            SnapsToDevicePixels="True">       
+                                            SnapsToDevicePixels="True">
                                         <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
                                                           ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
                                                           ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
