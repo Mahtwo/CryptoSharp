@@ -5,7 +5,7 @@ namespace CryptoSharp.Tests
     [TestClass()]
     public class DeckTests
     {
-        private readonly Deck deck = new();
+        private Deck deck = new();
 
         [TestMethod()]
         public void GetCardTest()
@@ -24,39 +24,37 @@ namespace CryptoSharp.Tests
         public void MoveCardTest()
         {
             // Card at position 0
-            Deck localDeck = new();
-            Card c = localDeck.GetCard(0);
-            localDeck.MoveCard(c, -1);
-            Assert.AreEqual(localDeck.GetCard(52), c);
+            Card c = deck.GetCard(0);
+            deck.MoveCard(c, -1);
+            Assert.AreEqual(deck.GetCard(52), c);
 
             // Card at position 22
-            localDeck = new();
-            c = localDeck.GetCard(22);
-            localDeck.MoveCard(c, 1);
-            Assert.AreEqual(localDeck.GetCard(23), c);
+            deck = new();
+            c = deck.GetCard(22);
+            deck.MoveCard(c, 1);
+            Assert.AreEqual(deck.GetCard(23), c);
 
             // Card at position 53
-            localDeck = new();
-            c = localDeck.GetCard(53);
-            localDeck.MoveCard(c, 1);
-            Assert.AreEqual(localDeck.GetCard(1), c);
+            deck = new();
+            c = deck.GetCard(53);
+            deck.MoveCard(c, 1);
+            Assert.AreEqual(deck.GetCard(1), c);
 
             // Move card 10 position down
-            localDeck = new();
-            c = localDeck.GetCard(5);
-            localDeck.MoveCard(c, -10);
-            Assert.AreEqual(localDeck.GetCard(48), c); // pos 5 4 3 2 1 0 52 51 50 49 48 --> Move 10
+            deck = new();
+            c = deck.GetCard(5);
+            deck.MoveCard(c, -10);
+            Assert.AreEqual(deck.GetCard(48), c); // pos 5 4 3 2 1 0 52 51 50 49 48 --> Move 10
         }
 
         [TestMethod()]
         public void DoubleCuttingTest()
         {
-            Deck localDeck = new();
-            localDeck.DoubleCutting();
-            Assert.AreEqual(localDeck.GetCard(0), Card.Black_Joker);
-            Assert.AreEqual(localDeck.GetCard(1), Card.Red_Joker);
-            Assert.AreEqual(localDeck.GetCard(2), Card.Clubs_A);
-            Assert.AreEqual(localDeck.GetCard(53), Card.Spades_K);
+            deck.DoubleCutting();
+            Assert.AreEqual(deck.GetCard(0), Card.Black_Joker);
+            Assert.AreEqual(deck.GetCard(1), Card.Red_Joker);
+            Assert.AreEqual(deck.GetCard(2), Card.Clubs_A);
+            Assert.AreEqual(deck.GetCard(53), Card.Spades_K);
         }
 
         [TestMethod()]
@@ -73,26 +71,25 @@ namespace CryptoSharp.Tests
         {
             // Test without Shuffle
 
-            Deck localDeck = new();
-            Card c = localDeck.GetCard(0);
-            localDeck.MoveCard(c, -1);
-            c = localDeck.GetCard(53);
-            localDeck.MoveCard(c, 1);
-            localDeck.SingleCuttingLastCard();
+            Card c = deck.GetCard(0);
+            deck.MoveCard(c, -1);
+            c = deck.GetCard(53);
+            deck.MoveCard(c, 1);
+            deck.SingleCuttingLastCard();
 
-            Assert.AreEqual(localDeck.GetCard(52), Card.Clubs_2);
-            Assert.AreEqual(localDeck.GetCard(0), Card.Red_Joker);
+            Assert.AreEqual(deck.GetCard(52), Card.Clubs_2);
+            Assert.AreEqual(deck.GetCard(0), Card.Red_Joker);
 
             // Test with Shuffle
 
-            Deck localDeckShuffle = new();
-            localDeckShuffle.Shuffle();
-            Card cShuffle = localDeckShuffle.GetCard(53);
+            deck = new();
+            deck.Shuffle();
+            Card cShuffle = deck.GetCard(53);
             int nbBridge = Deck.GetBridgeNumber(cShuffle);
-            Card firstCard = localDeckShuffle.GetCard(0);
-            localDeckShuffle.SingleCuttingLastCard();
+            Card firstCard = deck.GetCard(0);
+            deck.SingleCuttingLastCard();
 
-            Assert.AreEqual(firstCard, localDeckShuffle.GetCard(53 - nbBridge));
+            Assert.AreEqual(firstCard, deck.GetCard(53 - nbBridge));
         }
     }
 }
