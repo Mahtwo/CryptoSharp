@@ -141,13 +141,13 @@ namespace CryptoSharpTests
         [TestMethod()]
         public void ReadingPseudoRandomLettersTest()
         {
-            Assert.AreEqual(2, deck.ReadingPseudoRandomLetters());
-            deck.MoveCard(Card.Spades_10, 6); // Spades_10 have value 48 (49 bridge) --> move to pos 1
+            Assert.AreEqual(deck.ReadingPseudoRandomLetters(), 2);
+            deck.MoveCard(Card.Spades_10, 6); // Move Spades_10 to pos 1
+            deck.MoveCard(Card.Clubs_A, -1); //  Move Clubs_A to have Spades_10 at pos 0
 
-            deck.MoveCard(Card.Clubs_A, -1); // Spades_10 have value 48 (49 bridge)--> move to pos 0
-            // We have Spades_K and his value is 51 (52 bridge)
-            Assert.AreEqual(26, deck.ReadingPseudoRandomLetters()); // 26 = 52 - 26 (letters of alphabet)
-            // TODO : PROBLEM HERE
+            // At the position 49 (bridge value of Spades_10), we have Spades_Q and his bridge value is 51
+            Assert.AreEqual(deck.GetCard(49), Card.Spades_Q);
+            Assert.AreEqual(deck.ReadingPseudoRandomLetters(), 25); // 25 = 51 - 26 (letters of alphabet)
         }
     }
 }
