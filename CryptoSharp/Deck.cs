@@ -27,13 +27,6 @@ namespace CryptoSharp
             return cards.ElementAt(index);
         }
 
-        public Card GetRandomCard()
-        {
-            Random rnd = new();
-            int index = rnd.Next(0, 54);
-            return cards.ElementAt(index);
-        }
-
         public void Shuffle()
         {
             // shuffle the deck
@@ -43,14 +36,16 @@ namespace CryptoSharp
 
         public int FindCardPosition(Card c)
         {
+            int pos = -1;
             for (int i = 0; i < 54; i++)
             {
                 if (cards.ElementAt(i) == c)
                 {
-                    return i;
+                    pos = i;
+                    break;
                 }
             }
-            return -1;
+            return pos;
         }
 
         public void MoveCard(Card c, int direction) // direction -1 is down | direction +1 is up
@@ -168,7 +163,11 @@ namespace CryptoSharp
             int index = 1;
             foreach (Card c in cards)
             {
-                str += index.ToString() + ". " + c.ToString() + "\n";
+                str += index.ToString() + ". " + c.ToString();
+                if (cards.Last?.Value != c)
+                {
+                    str += "\n";
+                }
                 index++;
             }
             return str;

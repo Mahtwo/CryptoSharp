@@ -1,6 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using CryptoSharp;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptoSharp.Tests
+namespace CryptoSharpTests
 {
     [TestClass()]
     public class DeckTests
@@ -55,6 +56,19 @@ namespace CryptoSharp.Tests
             Assert.AreEqual(deck.GetCard(1), Card.Red_Joker);
             Assert.AreEqual(deck.GetCard(2), Card.Clubs_A);
             Assert.AreEqual(deck.GetCard(53), Card.Spades_K);
+
+            // move Joker to have posJoker1 > posJoker2
+            deck = new();
+            deck.MoveCard(Card.Red_Joker, 1);
+            deck.DoubleCutting();
+            Assert.AreEqual(deck.GetCard(0), Card.Red_Joker);
+
+            // test to have third part in doubleCutting
+            deck = new();
+            deck.MoveCard(Card.Red_Joker, 1);
+            deck.MoveCard(Card.Black_Joker, 1);
+            deck.DoubleCutting();
+            Assert.AreEqual(deck.GetCard(0), Card.Clubs_2);
         }
 
         [TestMethod()]
@@ -90,6 +104,50 @@ namespace CryptoSharp.Tests
             deck.SingleCuttingLastCard();
 
             Assert.AreEqual(firstCard, deck.GetCard(53 - nbBridge));
+        }
+
+        [TestMethod()]
+        public void DeckTest()
+        {
+            LinkedList<Card> cardsList = new();
+            cardsList.AddFirst(Card.Clubs_A);
+            cardsList.AddLast(Card.Black_Joker);
+            Deck deck = new(cardsList);
+            Assert.AreEqual(deck.GetCard(0), Card.Clubs_A);
+            Assert.AreEqual(deck.GetCard(1), Card.Black_Joker);
+        }
+
+        [TestMethod()]
+        public void ToStringTest()
+        {
+            LinkedList<Card> cardsList = new();
+            cardsList.AddFirst(Card.Clubs_A);
+            cardsList.AddLast(Card.Black_Joker);
+            Deck deck = new(cardsList);
+            string resultString = deck.ToString();
+            Assert.AreEqual(resultString, "1. Clubs_A\n2. Black_Joker");
+        }
+
+        [TestMethod()]
+        public void ReadingBridgeNumberNotJokerTest()
+        {
+            Assert.AreEqual(deck.ReadingBridgeNumberNotJoker(), true);
+            // test false if Joker
+            // have clubs_A in first position and Joker in second
+            deck.MoveCard(Card.Red_Joker, 1);
+            Assert.AreEqual(deck.ReadingBridgeNumberNotJoker(), false);
+        }
+
+        [TestMethod()]
+        public void ReadingPseudoRandomLettersTest()
+        {
+            Assert.AreEqual(deck.ReadingPseudoRandomLetters(), 2);
+            deck.MoveCard(Card.Spades_10, 6); // Spades_10 have value 48 (49 bridge) --> move to pos 1
+
+            deck.MoveCard(Card.Clubs_A, -1); // Spades_10 have value 48 (49 bridge)--> move to pos 0
+            // We have Spades_K and his value is 51 (52 bridge)
+            Assert.AreEqual(deck.ReadingPseudoRandomLetters(), 26); // 26 = 52 - 26 (letters of alphabet)
+            // TODO : PROBLEM HERE
         }
     }
 }

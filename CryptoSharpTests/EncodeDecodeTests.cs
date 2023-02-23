@@ -1,6 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using CryptoSharp;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CryptoSharp.Tests
+namespace CryptoSharpTests
 {
     [TestClass()]
     public class EncodeDecodeTests
