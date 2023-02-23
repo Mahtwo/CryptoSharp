@@ -19,7 +19,7 @@ namespace CryptoSharp
         {
             // Initialize window
             InitializeComponent();
-            cardsList.AddHandler(ListBox.MouseDownEvent, new System.Windows.Input.MouseButtonEventHandler(CardsList_MouseDown), true);
+            cardsList.AddHandler(ListBox.MouseDownEvent, new MouseButtonEventHandler(CardsList_MouseDown), true);
             // Add cards to cardsList
             foreach (Card c in Enum.GetValues(typeof(Card)))
             {
@@ -137,7 +137,7 @@ namespace CryptoSharp
             TextBox textBox = (TextBox)sender;
             if (textBox.Foreground == Brushes.Gray)
             {
-                textBox.Foreground = Brushes.Black;
+                textBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
                 textBox.Text = "";
             }
         }
@@ -187,7 +187,7 @@ namespace CryptoSharp
             int[] encodeKey = GetKeyFromCardsList(message);
             string encodedMessage = EncodeDecode.EncodeMessage(message, encodeKey);
             inputDecodeMessage.Text = encodedMessage;
-            inputDecodeMessage.Foreground = Brushes.Black;
+            inputDecodeMessage.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
             inputEncodeMessage.Foreground = Brushes.Gray;
 
 
@@ -217,7 +217,7 @@ namespace CryptoSharp
             int[] encodeKey = GetKeyFromCardsList(message);
             string decodedMessage = EncodeDecode.DecodeMessage(message, encodeKey);
             inputEncodeMessage.Text = decodedMessage;
-            inputEncodeMessage.Foreground = Brushes.Black;
+            inputEncodeMessage.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
             inputDecodeMessage.Foreground = Brushes.Gray;
 
             // Display in terminal

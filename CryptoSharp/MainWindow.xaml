@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CryptoSharp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="CryptoSharp" Height="450" Width="800" Background="#1e1e1e">
+    <Window.Style>
+        <Style/>
+    </Window.Style>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -18,23 +21,88 @@
 
         <!-- Cards List -->
         <DockPanel Grid.Column="0" Margin="10">
-            <Label x:Name="labelCardsList" Content="Cards" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-            <ListBox x:Name="cardsList" DockPanel.Dock="Bottom" AllowDrop="True" DragEnter="CardsList_DragEnterOver" DragOver="CardsList_DragEnterOver" Drop="CardsList_Drop" />
+            <Label x:Name="labelCardsList" Content="Cards" HorizontalAlignment="Center" DockPanel.Dock="Top" Foreground="#FAFAFA"/>
+            <ListBox x:Name="cardsList" DockPanel.Dock="Bottom" AllowDrop="True" DragEnter="CardsList_DragEnterOver" DragOver="CardsList_DragEnterOver" Drop="CardsList_Drop" Background="#1e1e1e" Foreground="#FAFAFA">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                            Padding="{TemplateBinding Control.Padding}"
+                                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                            Background="{TemplateBinding Panel.Background}"
+                                            Name="Bd"
+                                            SnapsToDevicePixels="True">       
+                                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                                                          ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                                          ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                                                          HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                                                          SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                <Condition Property="Selector.IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
+                                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                <Setter.Value>
+                                                    <SolidColorBrush></SolidColorBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                <Condition Property="Selector.IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Panel.Background" TargetName="Bd" Value="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"/>
+                                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                <Setter.Value>
+                                                    <SolidColorBrush></SolidColorBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiTrigger>
+                                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                            <Setter Property="Panel.Background" TargetName="Bd" Value="{Binding Source={x:Static SystemParameters.WindowGlassBrush}}"/>
+                                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                <Setter.Value>
+                                                    <SolidColorBrush></SolidColorBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                                            <Setter Property="TextElement.Foreground" TargetName="Bd">
+                                                <Setter.Value>
+                                                    <DynamicResource ResourceKey="{x:Static SystemColors.GrayTextBrushKey}" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
         </DockPanel>
         
 
         <!-- Encode Message -->
         <StackPanel Orientation="Vertical"  Grid.Column="1" Margin="40" VerticalAlignment="Center">
-            <Label x:Name="labelEncodeMessage" Content="Encode Message" HorizontalAlignment="Center" Margin="0 0 0 5"/>
-            <TextBox x:Name="inputEncodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus" Text="Enter your message to encode" Foreground="Gray"/>
-            <Button x:Name="buttonEncodeMessage" Content="Encode" Click="ButtonEncodeMessage_Click" />
+            <Label x:Name="labelEncodeMessage" Content="Encode Message" HorizontalAlignment="Center" Margin="0 0 0 5" Foreground="#FAFAFA"/>
+            <TextBox x:Name="inputEncodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" Padding="5" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus" Text="Enter your message to encode" Foreground="Gray" Background="#3d3d3d"/>
+            <Button x:Name="buttonEncodeMessage" Content="Encode" Click="ButtonEncodeMessage_Click" Background="#3d3d3d" Foreground="#FAFAFA"/>
         </StackPanel>
 
         <!-- Decode Message -->
         <StackPanel Orientation="Vertical"  Grid.Column="2" Margin="40" VerticalAlignment="Center">
-            <Label x:Name="labelDecodeMessage" Content="Decode Message" HorizontalAlignment="Center" Margin="0 0 0 5"/>
-            <TextBox x:Name="inputDecodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" Text="Enter your message to decode" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
-            <Button x:Name="buttonDecodeMessage" Content="Decode" Click="ButtonDecodeMessage_Click"/>
+            <Label x:Name="labelDecodeMessage" Content="Decode Message" HorizontalAlignment="Center" Margin="0 0 0 5" Foreground="#FAFAFA"/>
+            <TextBox x:Name="inputDecodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" Padding="5" Text="Enter your message to decode" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Background="#424242"/>
+            <Button x:Name="buttonDecodeMessage" Content="Decode" Click="ButtonDecodeMessage_Click" Background="#3d3d3d" Foreground="#FAFAFA"/>
         </StackPanel>
     </Grid>
 </Window>
