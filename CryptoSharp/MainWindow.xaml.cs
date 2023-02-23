@@ -269,7 +269,7 @@ namespace CryptoSharp
                     int caretPosition = textBox.CaretIndex;
                     textBox.Text = newText;
                     textBox.CaretIndex = caretPosition - removedCharacters;
-                    textBox.Foreground = Brushes.Black;
+                    textBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
                 }
             }
         }
