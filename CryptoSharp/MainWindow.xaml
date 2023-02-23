@@ -94,14 +94,14 @@
         <!-- Encode Message -->
         <StackPanel Orientation="Vertical"  Grid.Column="1" Margin="40" VerticalAlignment="Center">
             <Label x:Name="labelEncodeMessage" Content="Encode Message" HorizontalAlignment="Center" Margin="0 0 0 5" Foreground="#FAFAFA"/>
-            <TextBox x:Name="inputEncodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" Padding="5" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus" Text="Enter your message to encode" Foreground="Gray" Background="#3d3d3d"/>
+            <TextBox x:Name="inputEncodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" Padding="5" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus" Foreground="Gray" Text="Enter your message to encode" Background="#3d3d3d" TextChanged="TextBox_TextChanged"/>
             <Button x:Name="buttonEncodeMessage" Content="Encode" Click="ButtonEncodeMessage_Click" Background="#3d3d3d" Foreground="#FAFAFA"/>
         </StackPanel>
 
         <!-- Decode Message -->
         <StackPanel Orientation="Vertical"  Grid.Column="2" Margin="40" VerticalAlignment="Center">
             <Label x:Name="labelDecodeMessage" Content="Decode Message" HorizontalAlignment="Center" Margin="0 0 0 5" Foreground="#FAFAFA"/>
-            <TextBox x:Name="inputDecodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" Padding="5" Text="Enter your message to decode" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Background="#424242"/>
+            <TextBox x:Name="inputDecodeMessage" TextWrapping="Wrap" TextAlignment="Center" Margin="0 0 0 15" Padding="5" Foreground="Gray" Text="Enter your message to decode" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Background="#424242" TextChanged="TextBox_TextChanged"/>
             <Button x:Name="buttonDecodeMessage" Content="Decode" Click="ButtonDecodeMessage_Click" Background="#3d3d3d" Foreground="#FAFAFA"/>
         </StackPanel>
     </Grid>

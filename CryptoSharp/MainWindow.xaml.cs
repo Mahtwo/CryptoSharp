@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -137,8 +138,8 @@ namespace CryptoSharp
             TextBox textBox = (TextBox)sender;
             if (textBox.Foreground == Brushes.Gray)
             {
-                textBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
                 textBox.Text = "";
+                textBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FAFAFA"));
             }
         }
 
@@ -198,7 +199,7 @@ namespace CryptoSharp
                 key += EncodeDecode.IntToAlphabet(encodeKey[i]);
             }
             Console.WriteLine("----------------------");
-            Console.WriteLine("You Encode a message : ");
+            Console.WriteLine("You encode a message");
             Console.WriteLine("Original Message : " + message);
             Console.WriteLine("Key : " + key);
             Console.WriteLine("Encoded Message : " + encodedMessage);
@@ -228,10 +229,49 @@ namespace CryptoSharp
             }
 
             Console.WriteLine("----------------------");
-            Console.WriteLine("You Decode a message : ");
+            Console.WriteLine("You decode a message");
             Console.WriteLine("Encoded Message : " + message);
             Console.WriteLine("Key : " + key);
             Console.WriteLine("Decoded Message : " + decodedMessage);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+
+            // Don't check the text if the text color is gray (placeholder)
+            if (textBox.Foreground != Brushes.Gray)
+            {
+                // Build the new text (uppercase letters only)
+                string currentText = textBox.Text;
+                StringBuilder newTextBuilder = new StringBuilder();
+                int removedCharacters = 0;
+                foreach (char letter in currentText)
+                {
+                    if (char.IsAsciiLetter(letter))
+                    {
+                        newTextBuilder.Append(char.ToUpperInvariant(letter));
+                    }
+                    else
+                    {
+                        removedCharacters++;
+                    }
+                }
+                string newText = newTextBuilder.ToString();
+
+                // If different than current text, apply the new text
+                if (currentText != newText)
+                {
+                    // Changing the text always call the TextChanged event,
+                    // so we temporarily change the text color to gray
+                    textBox.Foreground = Brushes.Gray;
+                    // Backup the current caret position to re-apply it with the correct position
+                    int caretPosition = textBox.CaretIndex;
+                    textBox.Text = newText;
+                    textBox.CaretIndex = caretPosition - removedCharacters;
+                    textBox.Foreground = Brushes.Black;
+                }
+            }
         }
     }
 }
