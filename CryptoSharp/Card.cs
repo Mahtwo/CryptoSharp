@@ -1,5 +1,8 @@
 ﻿namespace CryptoSharp
 {
+    /// <summary>
+    /// Represents a card in a deck of cards.
+    /// </summary>
     public enum Card
     {
         Clubs_A,

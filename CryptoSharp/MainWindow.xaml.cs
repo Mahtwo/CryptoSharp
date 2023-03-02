@@ -16,9 +16,19 @@ namespace CryptoSharp
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Instance of 54 cards deck
+        /// </summary>
         private Deck deck = new();
+
+        /// <summary>
+        /// Boolean for the scroll timer (to avoid scrolling too fast)
+        /// </summary>
         private bool dragScrollAvailable = true;
 
+        /// <summary>
+        /// Initialize the window and add all cards to the ListBox
+        /// </summary>
         public MainWindow()
         {
             // Initialize window
@@ -32,6 +42,11 @@ namespace CryptoSharp
             }
         }
 
+        /// <summary>
+        /// Event when user click in ListBox element to start Drag and Drop
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CardsList_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (cardsList.SelectedItem != null)
@@ -41,6 +56,11 @@ namespace CryptoSharp
             }
         }
 
+        /// <summary>
+        /// Event when user drag a card over the ListBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CardsList_DragEnterOver(object sender, DragEventArgs e)
         {
             e.Handled = true;
@@ -92,6 +112,9 @@ namespace CryptoSharp
             e.Effects = DragDropEffects.None;
         }
 
+        /// <summary>
+        /// Method to reduce scrolling speed (to avoid scrolling too fast)
+        /// </summary>
         private void WaitAllowScroll()
         {
             // Only allow scrolling every 50ms
@@ -99,6 +122,11 @@ namespace CryptoSharp
             new Thread(() => { Thread.Sleep(50); dragScrollAvailable = true; }).Start();
         }
 
+        /// <summary>
+        /// Event when user drop a card in the ListBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CardsList_Drop(object sender, DragEventArgs e)
         {
             if (e.Effects != DragDropEffects.None)
@@ -152,6 +180,11 @@ namespace CryptoSharp
             }
         }
 
+        /// <summary>
+        /// Event when a textBox is no longer focused by the user to change the text (placeholder) if empty
+        /// </summary>
+        /// <param name="sender">The textBox who lost focus</param>
+        /// <param name="e"></param>
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -169,6 +202,11 @@ namespace CryptoSharp
             }
         }
 
+        /// <summary>
+        /// Event when a textBox is focus by the user to change the text (placeholder) and the color
+        /// </summary>
+        /// <param name="sender">The textBox who get focus</param>
+        /// <param name="e"></param>
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -179,6 +217,11 @@ namespace CryptoSharp
             }
         }
 
+        /// <summary>
+        /// Method to get the key from the cards list
+        /// </summary>
+        /// <param name="message">the message to get the length to have same length in the key</param>
+        /// <returns>Int table key</returns>
         private int[] GetKeyFromCardsList(string message)
         {
             // get all cards in ListBox
@@ -211,6 +254,12 @@ namespace CryptoSharp
             return encodeKey;
         }
 
+        /// <summary>
+        /// Event when the user click on the button to encode a message
+        /// Encode the message and display it in the associated textBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ButtonEncodeMessage_Click(object sender, RoutedEventArgs e)
         {
             // Check if message exists
@@ -241,6 +290,12 @@ namespace CryptoSharp
             Console.WriteLine("Encoded Message : " + encodedMessage);
         }
 
+        /// <summary>
+        /// Event when the user click on the button to decode a message
+        /// Decode the message and display it in the associated textBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ButtonDecodeMessage_Click(object sender, RoutedEventArgs e)
         {
             // Check if message exists
@@ -271,6 +326,11 @@ namespace CryptoSharp
             Console.WriteLine("Decoded Message : " + decodedMessage);
         }
 
+        /// <summary>
+        /// Event when the text change in a textBox to check if the text is valid (only uppercase letters)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -310,6 +370,11 @@ namespace CryptoSharp
             }
         }
 
+        /// <summary>
+        /// Event when the user click on the button to shuffle the cards in the listBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ButtonShuffle_Click(object sender, RoutedEventArgs e)
         {
             // get all cards in ListBox
