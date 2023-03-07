@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+<namespace>org.doxygen.CryptoSharp</namespace>
+<virtualFolder>doc</virtualFolder>
+<filterSection>
+<filterAttribute>doxygen</filterAttribute>
+<toc>
+<section title="CryptoSharp 1.0" ref="index.html">
+<section title="Namespaces" ref="namespaces.html">
+<section title="Namespace List" ref="namespaces.html">
+<section title="CryptoSharp" ref="namespace_crypto_sharp.html">
+<section title="App" ref="class_crypto_sharp_1_1_app.html">
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_app.html#a76fd1a1d085effcad67b01f2bd727b38"/>
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_app.html#a76fd1a1d085effcad67b01f2bd727b38"/>
+</section>
+<section title="Deck" ref="class_crypto_sharp_1_1_deck.html">
+<section title="Deck" ref="class_crypto_sharp_1_1_deck.html#a530cf8b42d493df4882ef419bc393204"/>
+<section title="Deck" ref="class_crypto_sharp_1_1_deck.html#af7523b8d512dda1d14d3ee2ab51b0e87"/>
+<section title="DoubleCutting" ref="class_crypto_sharp_1_1_deck.html#a206e4025cb2bae062dd030bc3af93bb4"/>
+<section title="FindCardPosition" ref="class_crypto_sharp_1_1_deck.html#a054b058bf943d994426cceec8cbbe4a0"/>
+<section title="GetCard" ref="class_crypto_sharp_1_1_deck.html#aecefcbb4c69508efaa1916732a58ba32"/>
+<section title="MoveCard" ref="class_crypto_sharp_1_1_deck.html#a5a1ad9ae5579840e564c061434c2677e"/>
+<section title="ReadingBridgeNumberNotJoker" ref="class_crypto_sharp_1_1_deck.html#a3b66b0a7d87103f6c266033b38aa6d29"/>
+<section title="ReadingPseudoRandomLetters" ref="class_crypto_sharp_1_1_deck.html#a830036f30ff895da835d28a46009b886"/>
+<section title="Shuffle" ref="class_crypto_sharp_1_1_deck.html#aee01c94e510a110aaaba421644bd1684"/>
+<section title="SingleCuttingLastCard" ref="class_crypto_sharp_1_1_deck.html#a8a92b4d6478926a6b4b30c750ac7a772"/>
+<section title="ToString" ref="class_crypto_sharp_1_1_deck.html#a816524e3f03090cd83774d06107a9250"/>
+</section>
+<section title="EncodeDecode" ref="class_crypto_sharp_1_1_encode_decode.html">
+</section>
+<section title="MainWindow" ref="class_crypto_sharp_1_1_main_window.html">
+<section title="MainWindow" ref="class_crypto_sharp_1_1_main_window.html#ada4a955e25fbb485edf69b37196e4d74"/>
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_main_window.html#a671898da9c98b118aec7c67de87a8b4d"/>
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_main_window.html#a671898da9c98b118aec7c67de87a8b4d"/>
+</section>
+<section title="Card" ref="namespace_crypto_sharp.html#a04dbda826cf0ee411a60d676161a7347"/>
+</section>
+<section title="Selen" ref="namespace_selen.html">
+<section title="Wpf" ref="namespace_selen_1_1_wpf.html">
+<section title="DemoApplication" ref="namespace_selen_1_1_wpf_1_1_demo_application.html">
+<section title="App" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html">
+<section title="InitializeComponent" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html#a009ad154de0d5d8b4fade4d2e6ef93f5"/>
+</section>
+</section>
+<section title="SystemStyles" ref="namespace_selen_1_1_wpf_1_1_system_styles.html">
+<section title="AppTreeStyles" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html">
+<section title="InitializeComponent" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html#afa46e5a3cdde8ea41d542b27a1d660e7"/>
+</section>
+</section>
+</section>
+</section>
+</section>
+<section title="Namespace Members" ref="namespacemembers.html">
+<section title="All" ref="namespacemembers.html"/>
+<section title="Enumerations" ref="namespacemembers_enum.html"/>
+</section>
+</section>
+<section title="Classes" ref="annotated.html">
+<section title="Class List" ref="annotated.html">
+<section title="CryptoSharp" ref="namespace_crypto_sharp.html">
+<section title="App" ref="class_crypto_sharp_1_1_app.html">
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_app.html#a76fd1a1d085effcad67b01f2bd727b38"/>
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_app.html#a76fd1a1d085effcad67b01f2bd727b38"/>
+</section>
+<section title="Deck" ref="class_crypto_sharp_1_1_deck.html">
+<section title="Deck" ref="class_crypto_sharp_1_1_deck.html#a530cf8b42d493df4882ef419bc393204"/>
+<section title="Deck" ref="class_crypto_sharp_1_1_deck.html#af7523b8d512dda1d14d3ee2ab51b0e87"/>
+<section title="DoubleCutting" ref="class_crypto_sharp_1_1_deck.html#a206e4025cb2bae062dd030bc3af93bb4"/>
+<section title="FindCardPosition" ref="class_crypto_sharp_1_1_deck.html#a054b058bf943d994426cceec8cbbe4a0"/>
+<section title="GetCard" ref="class_crypto_sharp_1_1_deck.html#aecefcbb4c69508efaa1916732a58ba32"/>
+<section title="MoveCard" ref="class_crypto_sharp_1_1_deck.html#a5a1ad9ae5579840e564c061434c2677e"/>
+<section title="ReadingBridgeNumberNotJoker" ref="class_crypto_sharp_1_1_deck.html#a3b66b0a7d87103f6c266033b38aa6d29"/>
+<section title="ReadingPseudoRandomLetters" ref="class_crypto_sharp_1_1_deck.html#a830036f30ff895da835d28a46009b886"/>
+<section title="Shuffle" ref="class_crypto_sharp_1_1_deck.html#aee01c94e510a110aaaba421644bd1684"/>
+<section title="SingleCuttingLastCard" ref="class_crypto_sharp_1_1_deck.html#a8a92b4d6478926a6b4b30c750ac7a772"/>
+<section title="ToString" ref="class_crypto_sharp_1_1_deck.html#a816524e3f03090cd83774d06107a9250"/>
+</section>
+<section title="EncodeDecode" ref="class_crypto_sharp_1_1_encode_decode.html">
+</section>
+<section title="MainWindow" ref="class_crypto_sharp_1_1_main_window.html">
+<section title="MainWindow" ref="class_crypto_sharp_1_1_main_window.html#ada4a955e25fbb485edf69b37196e4d74"/>
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_main_window.html#a671898da9c98b118aec7c67de87a8b4d"/>
+<section title="InitializeComponent" ref="class_crypto_sharp_1_1_main_window.html#a671898da9c98b118aec7c67de87a8b4d"/>
+</section>
+</section>
+<section title="Selen" ref="namespace_selen.html">
+<section title="Wpf" ref="namespace_selen_1_1_wpf.html">
+<section title="DemoApplication" ref="namespace_selen_1_1_wpf_1_1_demo_application.html">
+<section title="App" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html">
+<section title="InitializeComponent" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html#a009ad154de0d5d8b4fade4d2e6ef93f5"/>
+</section>
+</section>
+<section title="SystemStyles" ref="namespace_selen_1_1_wpf_1_1_system_styles.html">
+<section title="AppTreeStyles" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html">
+<section title="InitializeComponent" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html#afa46e5a3cdde8ea41d542b27a1d660e7"/>
+</section>
+</section>
+</section>
+</section>
+</section>
+<section title="Class Index" ref="classes.html"/>
+<section title="Class Hierarchy" ref="hierarchy.html">
+<section title="Application" ref="">
+<section title="CryptoSharp.App" ref="class_crypto_sharp_1_1_app.html"/>
+</section>
+<section title="System.Windows.Application" ref="">
+<section title="CryptoSharp.App" ref="class_crypto_sharp_1_1_app.html"/>
+<section title="CryptoSharp.App" ref="class_crypto_sharp_1_1_app.html"/>
+<section title="Selen.Wpf.DemoApplication.App" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html"/>
+</section>
+<section title="CryptoSharp.Deck" ref="class_crypto_sharp_1_1_deck.html"/>
+<section title="CryptoSharp.EncodeDecode" ref="class_crypto_sharp_1_1_encode_decode.html"/>
+<section title="System.Windows.Markup.IComponentConnector" ref="">
+<section title="CryptoSharp.MainWindow" ref="class_crypto_sharp_1_1_main_window.html"/>
+<section title="CryptoSharp.MainWindow" ref="class_crypto_sharp_1_1_main_window.html"/>
+<section title="Selen.Wpf.DemoApplication.App" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html"/>
+<section title="Selen.Wpf.SystemStyles.AppTreeStyles" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html"/>
+</section>
+<section title="System.Windows.ResourceDictionary" ref="">
+<section title="Selen.Wpf.SystemStyles.AppTreeStyles" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html"/>
+</section>
+<section title="System.Windows.Window" ref="">
+<section title="CryptoSharp.MainWindow" ref="class_crypto_sharp_1_1_main_window.html"/>
+<section title="CryptoSharp.MainWindow" ref="class_crypto_sharp_1_1_main_window.html"/>
+</section>
+<section title="Window" ref="">
+<section title="CryptoSharp.MainWindow" ref="class_crypto_sharp_1_1_main_window.html"/>
+</section>
+</section>
+<section title="Class Members" ref="functions.html">
+<section title="All" ref="functions.html"/>
+<section title="Functions" ref="functions_func.html"/>
+</section>
+</section>
+</section>
+</toc>
+<keywords>
+<keyword name="CryptoSharp::App" id="CryptoSharp::App_" ref="class_crypto_sharp_1_1_app.html"/>
+<keyword name="Selen::Wpf::DemoApplication::App" id="Selen::Wpf::DemoApplication::App_" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html"/>
+<keyword name="Selen::Wpf::SystemStyles::AppTreeStyles" id="Selen::Wpf::SystemStyles::AppTreeStyles_" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html"/>
+<keyword name="CryptoSharp::Deck" id="CryptoSharp::Deck_" ref="class_crypto_sharp_1_1_deck.html"/>
+<keyword name="CryptoSharp::EncodeDecode" id="CryptoSharp::EncodeDecode_" ref="class_crypto_sharp_1_1_encode_decode.html"/>
+<keyword name="CryptoSharp::MainWindow" id="CryptoSharp::MainWindow_" ref="class_crypto_sharp_1_1_main_window.html"/>
+<keyword name="CryptoSharp" id="CryptoSharp_" ref="namespace_crypto_sharp.html"/>
+<keyword name="Selen" id="Selen_" ref="namespace_selen.html"/>
+<keyword name="Selen::Wpf" id="Selen::Wpf_" ref="namespace_selen_1_1_wpf.html"/>
+<keyword name="Selen::Wpf::DemoApplication" id="Selen::Wpf::DemoApplication_" ref="namespace_selen_1_1_wpf_1_1_demo_application.html"/>
+<keyword name="Selen::Wpf::SystemStyles" id="Selen::Wpf::SystemStyles_" ref="namespace_selen_1_1_wpf_1_1_system_styles.html"/>
+<keyword name="AlphabetToInt(char c)" id="CryptoSharp::EncodeDecode::AlphabetToInt_a21b71c308454e2315313b0ba318ec27c" ref="class_crypto_sharp_1_1_encode_decode.html#a21b71c308454e2315313b0ba318ec27c"/>
+<keyword name="Deck()" id="CryptoSharp::Deck::Deck_a530cf8b42d493df4882ef419bc393204" ref="class_crypto_sharp_1_1_deck.html#a530cf8b42d493df4882ef419bc393204"/>
+<keyword name="Deck(LinkedList&lt; Card &gt; cards)" id="CryptoSharp::Deck::Deck_af7523b8d512dda1d14d3ee2ab51b0e87" ref="class_crypto_sharp_1_1_deck.html#af7523b8d512dda1d14d3ee2ab51b0e87"/>
+<keyword name="DecodeMessage(string message, int[] key)" id="CryptoSharp::EncodeDecode::DecodeMessage_a2f390f17cb238b12a768233e94493ab5" ref="class_crypto_sharp_1_1_encode_decode.html#a2f390f17cb238b12a768233e94493ab5"/>
+<keyword name="DoubleCutting()" id="CryptoSharp::Deck::DoubleCutting_a206e4025cb2bae062dd030bc3af93bb4" ref="class_crypto_sharp_1_1_deck.html#a206e4025cb2bae062dd030bc3af93bb4"/>
+<keyword name="EncodeMessage(string message, int[] key)" id="CryptoSharp::EncodeDecode::EncodeMessage_a02c2078eb8be5d7d9357cf4f0fb345dc" ref="class_crypto_sharp_1_1_encode_decode.html#a02c2078eb8be5d7d9357cf4f0fb345dc"/>
+<keyword name="FindCardPosition(Card c)" id="CryptoSharp::Deck::FindCardPosition_a054b058bf943d994426cceec8cbbe4a0" ref="class_crypto_sharp_1_1_deck.html#a054b058bf943d994426cceec8cbbe4a0"/>
+<keyword name="GetBridgeNumber(Card c)" id="CryptoSharp::Deck::GetBridgeNumber_aa45bf85dc1534cacc4fac2a9f62acaf3" ref="class_crypto_sharp_1_1_deck.html#aa45bf85dc1534cacc4fac2a9f62acaf3"/>
+<keyword name="GetCard(int index)" id="CryptoSharp::Deck::GetCard_aecefcbb4c69508efaa1916732a58ba32" ref="class_crypto_sharp_1_1_deck.html#aecefcbb4c69508efaa1916732a58ba32"/>
+<keyword name="InitializeComponent()" id="CryptoSharp::App::InitializeComponent_a76fd1a1d085effcad67b01f2bd727b38" ref="class_crypto_sharp_1_1_app.html#a76fd1a1d085effcad67b01f2bd727b38"/>
+<keyword name="InitializeComponent()" id="CryptoSharp::App::InitializeComponent_a76fd1a1d085effcad67b01f2bd727b38" ref="class_crypto_sharp_1_1_app.html#a76fd1a1d085effcad67b01f2bd727b38"/>
+<keyword name="InitializeComponent()" id="CryptoSharp::MainWindow::InitializeComponent_a671898da9c98b118aec7c67de87a8b4d" ref="class_crypto_sharp_1_1_main_window.html#a671898da9c98b118aec7c67de87a8b4d"/>
+<keyword name="InitializeComponent()" id="CryptoSharp::MainWindow::InitializeComponent_a671898da9c98b118aec7c67de87a8b4d" ref="class_crypto_sharp_1_1_main_window.html#a671898da9c98b118aec7c67de87a8b4d"/>
+<keyword name="InitializeComponent()" id="Selen::Wpf::DemoApplication::App::InitializeComponent_a009ad154de0d5d8b4fade4d2e6ef93f5" ref="class_selen_1_1_wpf_1_1_demo_application_1_1_app.html#a009ad154de0d5d8b4fade4d2e6ef93f5"/>
+<keyword name="InitializeComponent()" id="Selen::Wpf::SystemStyles::AppTreeStyles::InitializeComponent_afa46e5a3cdde8ea41d542b27a1d660e7" ref="class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html#afa46e5a3cdde8ea41d542b27a1d660e7"/>
+<keyword name="IntToAlphabet(int i)" id="CryptoSharp::EncodeDecode::IntToAlphabet_aa5be1e7a8ef294ffdb26fc09f15aaeb1" ref="class_crypto_sharp_1_1_encode_decode.html#aa5be1e7a8ef294ffdb26fc09f15aaeb1"/>
+<keyword name="Main()" id="CryptoSharp::App::Main_ae6090fd37c4fddddbe95e2e9e11dcf5d" ref="class_crypto_sharp_1_1_app.html#ae6090fd37c4fddddbe95e2e9e11dcf5d"/>
+<keyword name="Main()" id="CryptoSharp::App::Main_ae6090fd37c4fddddbe95e2e9e11dcf5d" ref="class_crypto_sharp_1_1_app.html#ae6090fd37c4fddddbe95e2e9e11dcf5d"/>
+<keyword name="MainWindow()" id="CryptoSharp::MainWindow::MainWindow_ada4a955e25fbb485edf69b37196e4d74" ref="class_crypto_sharp_1_1_main_window.html#ada4a955e25fbb485edf69b37196e4d74"/>
+<keyword name="MoveCard(Card c, int direction)" id="CryptoSharp::Deck::MoveCard_a5a1ad9ae5579840e564c061434c2677e" ref="class_crypto_sharp_1_1_deck.html#a5a1ad9ae5579840e564c061434c2677e"/>
+<keyword name="ReadingBridgeNumberNotJoker()" id="CryptoSharp::Deck::ReadingBridgeNumberNotJoker_a3b66b0a7d87103f6c266033b38aa6d29" ref="class_crypto_sharp_1_1_deck.html#a3b66b0a7d87103f6c266033b38aa6d29"/>
+<keyword name="ReadingPseudoRandomLetters()" id="CryptoSharp::Deck::ReadingPseudoRandomLetters_a830036f30ff895da835d28a46009b886" ref="class_crypto_sharp_1_1_deck.html#a830036f30ff895da835d28a46009b886"/>
+<keyword name="Shuffle()" id="CryptoSharp::Deck::Shuffle_aee01c94e510a110aaaba421644bd1684" ref="class_crypto_sharp_1_1_deck.html#aee01c94e510a110aaaba421644bd1684"/>
+<keyword name="SingleCuttingLastCard()" id="CryptoSharp::Deck::SingleCuttingLastCard_a8a92b4d6478926a6b4b30c750ac7a772" ref="class_crypto_sharp_1_1_deck.html#a8a92b4d6478926a6b4b30c750ac7a772"/>
+<keyword name="ToString()" id="CryptoSharp::Deck::ToString_a816524e3f03090cd83774d06107a9250" ref="class_crypto_sharp_1_1_deck.html#a816524e3f03090cd83774d06107a9250"/>
+<keyword name="Card" id="CryptoSharp::Card_a04dbda826cf0ee411a60d676161a7347" ref="namespace_crypto_sharp.html#a04dbda826cf0ee411a60d676161a7347"/>
+</keywords>
+<files>
+<file>annotated.html</file>
+<file>bc_s.png</file>
+<file>bc_sd.png</file>
+<file>bdwn.png</file>
+<file>class_crypto_sharp_1_1_app-members.html</file>
+<file>class_crypto_sharp_1_1_app.html</file>
+<file>class_crypto_sharp_1_1_app.png</file>
+<file>class_crypto_sharp_1_1_deck-members.html</file>
+<file>class_crypto_sharp_1_1_deck.html</file>
+<file>class_crypto_sharp_1_1_encode_decode-members.html</file>
+<file>class_crypto_sharp_1_1_encode_decode.html</file>
+<file>class_crypto_sharp_1_1_main_window-members.html</file>
+<file>class_crypto_sharp_1_1_main_window.html</file>
+<file>class_crypto_sharp_1_1_main_window.png</file>
+<file>class_selen_1_1_wpf_1_1_demo_application_1_1_app-members.html</file>
+<file>class_selen_1_1_wpf_1_1_demo_application_1_1_app.html</file>
+<file>class_selen_1_1_wpf_1_1_demo_application_1_1_app.png</file>
+<file>class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles-members.html</file>
+<file>class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.html</file>
+<file>class_selen_1_1_wpf_1_1_system_styles_1_1_app_tree_styles.png</file>
+<file>classes.html</file>
+<file>closed.png</file>
+<file>dir_43724e81dd40e09f32417973865cdd64.html</file>
+<file>dir_66e821f882308be91284a53e2fa87582.html</file>
+<file>dir_88469ed6ac41f994d1cfca07ee191840.html</file>
+<file>dir_a71c3b2ad23b9ff58220dd012d201987.html</file>
+<file>dir_c95904e52a95d86df0328f69d648f8fc.html</file>
+<file>doc.png</file>
+<file>docd.png</file>
+<file>doxygen.css</file>
+<file>doxygen.svg</file>
+<file>dynsections.js</file>
+<file>folderclosed.png</file>
+<file>folderopen.png</file>
+<file>functions.html</file>
+<file>functions_func.html</file>
+<file>hierarchy.html</file>
+<file>index.html</file>
+<file>jquery.js</file>
+<file>logo.png</file>
+<file>menu.js</file>
+<file>menudata.js</file>
+<file>namespace_crypto_sharp.html</file>
+<file>namespace_selen.html</file>
+<file>namespace_selen_1_1_wpf.html</file>
+<file>namespace_selen_1_1_wpf_1_1_demo_application.html</file>
+<file>namespace_selen_1_1_wpf_1_1_system_styles.html</file>
+<file>namespacemembers.html</file>
+<file>namespacemembers_enum.html</file>
+<file>namespaces.html</file>
+<file>nav_f.png</file>
+<file>nav_fd.png</file>
+<file>nav_g.png</file>
+<file>nav_h.png</file>
+<file>nav_hd.png</file>
+<file>open.png</file>
+<file>search/close.svg</file>
+<file>search/mag.svg</file>
+<file>search/mag_d.svg</file>
+<file>search/mag_sel.svg</file>
+<file>search/mag_seld.svg</file>
+<file>search/search.css</file>
+<file>search/search.js</file>
+<file>splitbar.png</file>
+<file>splitbard.png</file>
+<file>sync_off.png</file>
+<file>sync_on.png</file>
+<file>tab_a.png</file>
+<file>tab_ad.png</file>
+<file>tab_b.png</file>
+<file>tab_bd.png</file>
+<file>tab_h.png</file>
+<file>tab_hd.png</file>
+<file>tab_s.png</file>
+<file>tab_sd.png</file>
+<file>tabs.css</file>
+</files>
+</filterSection>
+</QtHelpProject>
