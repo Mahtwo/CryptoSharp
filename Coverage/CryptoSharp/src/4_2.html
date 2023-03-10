@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\WINDOWS\Documents\GitHub\CryptoSharp\CryptoSharp\Deck.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CryptoSharp
+{
+    /// &lt;summary&gt;
+    /// Class who represents a deck of cards.
+    /// &lt;/summary&gt;
+    public class Deck
+    {
+        /// &lt;summary&gt;
+        /// List of cards in the deck.
+        /// &lt;/summary&gt;
+        private LinkedList&lt;Card&gt; cards = new(); // 52 cards + 2 jokers
+
+        /// &lt;summary&gt;
+        /// Constructor of the deck without argument. Create a deck with 52 cards and 2 jokers (all cards in Card enum).
+        /// &lt;/summary&gt;
+        public Deck()
+        {
+            foreach (Card c in Enum.GetValues(typeof(Card)))
+            {
+                cards.AddLast(c);
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Constructor of the deck with a list of cards. Create a deck with the cards in the list.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;cards&quot;&gt;cards who will be in the deck&lt;/param&gt;
+        public Deck(LinkedList&lt;Card&gt; cards)
+        {
+            this.cards = cards;
+        }
+
+        /// &lt;summary&gt;
+        /// Get the card at the index in the deck.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;index&quot;&gt;Index of the card you want&lt;/param&gt;
+        /// &lt;returns&gt;Card a the index in parameters&lt;/returns&gt;
+        public Card GetCard(int index)
+        {
+            return cards.ElementAt(index);
+        }
+
+        /// &lt;summary&gt;
+        /// Shuffle the deck randomly.
+        /// &lt;/summary&gt;
+        public void Shuffle()
+        {
+            // shuffle the deck
+            Random rnd = new();
+            cards = new LinkedList&lt;Card&gt;(cards.OrderBy(x =&gt; rnd.Next()));
+        }
+
+        /// &lt;summary&gt;
+        /// Find the position of a specific card in the deck
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;c&quot;&gt;Card you want to find the position in the deck&lt;/param&gt;
+        /// &lt;returns&gt;Position of the card in parameters&lt;/returns&gt;
+        public int FindCardPosition(Card c)
+        {
+            int pos = -1;
+            for (int i = 0; i &lt; 54; i++)
+            {
+                if (cards.ElementAt(i) == c)
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            return pos;
+        }
+
+        /// &lt;summary&gt;
+        /// Move card in the deck in a direction. You can move up or down a specific card and you can move several position at the same time
+        /// If you move outside the front of the deck, the card will be in second to last position
+        /// If you move outside the back of tje deck, the card will be in second position
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;c&quot;&gt;The card you want to move&lt;/param&gt;
+        /// &lt;param name=&quot;direction&quot;&gt;How many position you want to move and if the sign is minus, you move down, if the sign is plus, you move up&lt;/param&gt;
+        public void MoveCard(Card c, int direction) // direction -1 is down | direction +1 is up
+        {
+            int pos = FindCardPosition(c);
+            int newPos = (((pos + direction) % 54) + 54) % 54; // canonical modulus (work with negative numbers, not native in C#)
+            LinkedListNode&lt;Card&gt; node = cards.Find(GetCard(newPos))!;
+            cards.Remove(c);
+            if (direction &gt; 0)
+            {
+                cards.AddAfter(node, c);
+            }
+            else
+            {
+                cards.AddBefore(node, c);
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Locate the two jokers and swap the deck of cards above the joker that is cards above the first joker with the deck of cards below the second joker which is in second place
+        /// &lt;/summary&gt;
+        public void DoubleCutting()
+        {
+            // find jokers
+            int posJoker1 = FindCardPosition(Card.Black_Joker);
+            int posJoker2 = FindCardPosition(Card.Red_Joker);
+            if (posJoker1 &gt; posJoker2)
+            {
+                // swap jokers
+                (posJoker2, posJoker1) = (posJoker1, posJoker2);
+            }
+
+            // get first part of the deck
+            LinkedList&lt;Card&gt; firstPart = new();
+            for (int i = 0; i &lt; posJoker1; i++)
+            {
+                firstPart.AddLast(GetCard(i));
+            }
+
+            // get second part of the deck
+            LinkedList&lt;Card&gt; secondPart = new();
+            for (int i = posJoker1; i &lt;= posJoker2; i++)
+            {
+                secondPart.AddLast(GetCard(i));
+            }
+
+            // get third part of the deck
+            LinkedList&lt;Card&gt; thirdPart = new();
+            for (int i = posJoker2 + 1; i &lt; 54; i++)
+            {
+                thirdPart.AddLast(GetCard(i));
+            }
+
+            // rebuild the deck
+            cards = new LinkedList&lt;Card&gt;(thirdPart.Concat(secondPart).Concat(firstPart));
+        }
+
+        /// &lt;summary&gt;
+        /// Get the Bridge Number of a specific card.
+        /// The bridge number is the number of the card in normal order in deck. 
+        /// Jokers will be 53. 
+        /// The first card will be 1.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;c&quot;&gt;Card you want Bridge Number&lt;/param&gt;
+        /// &lt;returns&gt;Bridge number of the card in parameters&lt;/returns&gt;
+        public static int GetBridgeNumber(Card c)
+        {
+            if (c == Card.Black_Joker || c == Card.Red_Joker)
+            {
+                return 53;
+            }
+            else
+            {
+                return (int)c + 1;
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// You look at the last card and evaluate its number according to the order of the Bridge: trefoil-card-heart-spade and in each suit ace, 2, 3, 4, 5, 6, 7, 8, 9, 10, jack, queen and king
+        /// (the ace of clubs has the number 1, the king of spades has the number 52). 
+        /// The jokers have by convention the number 53. If the number of the last card is n you take the first n cards from the top of the deck and place them on the table from the top of the deck and place them behind the other cards except for the last card which remains the last
+        /// &lt;/summary&gt;
+        public void SingleCuttingLastCard()
+        {
+            Card c = GetCard(53);
+            int bridgeNumber = GetBridgeNumber(c);
+
+            // first part
+            LinkedList&lt;Card&gt; firstPart = new();
+            for (int i = 0; i &lt; bridgeNumber; i++)
+            {
+                firstPart.AddLast(GetCard(i));
+            }
+
+            // second part
+            LinkedList&lt;Card&gt; secondPart = new();
+            for (int i = bridgeNumber; i &lt; 53; i++)
+            {
+                secondPart.AddLast(GetCard(i));
+            }
+
+            // third part
+            LinkedList&lt;Card&gt; thirdPart = new();
+            thirdPart.AddLast(GetCard(53));
+
+            // rebuild the deck
+            cards = new LinkedList&lt;Card&gt;(secondPart.Concat(firstPart).Concat(thirdPart));
+        }
+
+        /// &lt;summary&gt;
+        /// Get if the bridge number of the card at position = bridge number of the first card, is 53
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;Return True if it&#39;s not a Joker, false then&lt;/returns&gt;
+        public bool ReadingBridgeNumberNotJoker()
+        {
+            int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
+            // We want the card at &quot;bridgeNumberFirstCard + 1&quot;,
+            // however bridgeNumberFirstCard returns between 1 and 53 included AND our index starts at 0,
+            // So we are basically doing &quot;bridgeNumberFirstCard + 1 - 1&quot;
+            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m
+            return bridgeNumberSecondCard != 53; // false if we have a Joker
+        }
+
+        /// &lt;summary&gt;
+        ///  Get the bridge number of the card at position = bridge number of the first card, minus 26 if &gt; 26.
+        ///  The aim is to get a Letter in the alphabet
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;A number between 1 and 26 who can be assimilated to an alphabet letter&lt;/returns&gt;
+        public int ReadingPseudoRandomLetters()
+        {
+            int bridgeNumberFirstCard = GetBridgeNumber(GetCard(0)); // = n
+            int bridgeNumberSecondCard = GetBridgeNumber(GetCard(bridgeNumberFirstCard)); // = m 
+            if (bridgeNumberSecondCard &gt; 26)
+            {
+                bridgeNumberSecondCard -= 26;
+            }
+            return bridgeNumberSecondCard;
+        }
+
+        /// &lt;summary&gt;
+        /// Get the deck in string like this : 
+        /// 1. cardName
+        /// 2. cardName
+        /// 3. cardName
+        /// etc.
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;Return a string who describe the deck&lt;/returns&gt;
+        public override string ToString()
+        {
+            string str = &quot;&quot;;
+            int index = 1;
+            foreach (Card c in cards)
+            {
+                str += index.ToString() + &quot;. &quot; + c.ToString();
+                if (cards.Last?.Value != c)
+                {
+                    str += &quot;\n&quot;;
+                }
+                index++;
+            }
+            return str;
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,9,15,48,1],[15,9,15,48,1],[20,9,20,22,1],[21,9,21,10,1],[22,13,22,20,1],[22,22,22,28,1],[22,29,22,31,1],[22,32,22,60,1],[23,13,23,14,1],[24,17,24,34,1],[25,13,25,14,1],[26,9,26,10,1],[32,9,32,44,1],[33,9,33,10,1],[34,13,34,32,1],[35,9,35,10,1],[43,9,43,10,1],[44,13,44,43,1],[45,9,45,10,1],[51,9,51,10,1],[53,13,53,32,1],[54,13,54,61,1],[54,61,54,71,1],[54,71,54,74,1],[55,9,55,10,1],[63,9,63,10,1],[64,13,64,26,1],[65,18,65,27,1],[65,29,65,35,1],[65,37,65,40,1],[66,13,66,14,1],[67,17,67,45,1],[68,17,68,18,1],[69,21,69,29,1],[70,21,70,27,1],[72,13,72,14,1],[73,13,73,24,1],[74,9,74,10,1],[84,9,84,10,1],[85,13,85,43,1],[86,13,86,63,1],[87,13,87,70,1],[88,13,88,29,1],[89,13,89,31,1],[90,13,90,14,1],[91,17,91,41,1],[92,13,92,14,1],[94,13,94,14,1],[95,17,95,42,1],[96,13,96,14,1],[97,9,97,10,1],[103,9,103,10,1],[105,13,105,64,1],[106,13,106,62,1],[107,13,107,39,1],[108,13,108,14,1],[110,17,110,65,1],[111,13,111,14,1],[114,13,114,48,1],[115,18,115,27,1],[115,29,115,42,1],[115,44,115,47,1],[116,13,116,14,1],[117,17,117,47,1],[118,13,118,14,1],[121,13,121,49,1],[122,18,122,35,1],[122,37,122,51,1],[122,53,122,56,1],[123,13,123,14,1],[124,17,124,48,1],[125,13,125,14,1],[128,13,128,48,1],[129,18,129,39,1],[129,41,129,47,1],[129,49,129,52,1],[130,13,130,14,1],[131,17,131,47,1],[132,13,132,14,1],[135,13,135,90,1],[136,9,136,10,1],[147,9,147,10,1],[148,13,148,62,1],[149,13,149,14,1],[150,17,150,27,1],[153,13,153,14,1],[154,17,154,35,1],[156,9,156,10,1],[164,9,164,10,1],[165,13,165,34,1],[166,13,166,51,1],[169,13,169,48,1],[170,18,170,27,1],[170,29,170,45,1],[170,47,170,50,1],[171,13,171,14,1],[172,17,172,47,1],[173,13,173,14,1],[176,13,176,49,1],[177,18,177,38,1],[177,40,177,46,1],[177,48,177,51,1],[178,13,178,14,1],[179,17,179,48,1],[180,13,180,14,1],[183,13,183,48,1],[184,13,184,44,1],[187,13,187,90,1],[188,9,188,10,1],[195,9,195,10,1],[196,13,196,69,1],[200,13,200,90,1],[201,13,201,49,1],[202,9,202,10,1],[210,9,210,10,1],[211,13,211,69,1],[212,13,212,90,1],[213,13,213,45,1],[214,13,214,14,1],[215,17,215,46,1],[216,13,216,14,1],[217,13,217,43,1],[218,9,218,10,1],[229,9,229,10,1],[230,13,230,29,1],[231,13,231,27,1],[232,13,232,20,1],[232,22,232,28,1],[232,29,232,31,1],[232,32,232,37,1],[233,13,233,14,1],[234,17,234,63,1],[235,17,235,44,1],[236,17,236,18,1],[237,21,237,33,1],[238,17,238,18,1],[239,17,239,25,1],[240,13,240,14,1],[241,13,241,24,1],[242,9,242,10,1]]);
+    </script>
+  </body>
+</html>

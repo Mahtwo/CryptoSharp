@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\WINDOWS\Documents\GitHub\CryptoSharp\CryptoSharp\MainWindow.xaml.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+
+namespace CryptoSharp
+{
+    /// &lt;summary&gt;
+    /// Interaction logic for MainWindow.xaml
+    /// &lt;/summary&gt;
+    public partial class MainWindow : Window
+    {
+        /// &lt;summary&gt;
+        /// Instance of 54 cards deck
+        /// &lt;/summary&gt;
+        private Deck deck = new();
+
+        /// &lt;summary&gt;
+        /// Boolean for the scroll timer (to avoid scrolling too fast)
+        /// &lt;/summary&gt;
+        private bool dragScrollAvailable = true;
+
+        /// &lt;summary&gt;
+        /// Initialize the window and add all cards to the ListBox
+        /// &lt;/summary&gt;
+        public MainWindow()
+        {
+            // Initialize window
+            InitializeComponent();
+            cardsList.AddHandler(ListBox.MouseDownEvent, new MouseButtonEventHandler(CardsList_MouseDown), true);
+            // Add cards to cardsList
+            foreach (Card c in Enum.GetValues(typeof(Card)))
+            {
+                string cardSpace = c.ToString().Replace(&#39;_&#39;, &#39; &#39;);
+                cardsList.Items.Add(cardSpace);
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Event when user click in ListBox element to start Drag and Drop
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void CardsList_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (cardsList.SelectedItem != null)
+            {
+                DragDrop.DoDragDrop(cardsList, cardsList.SelectedItem, DragDropEffects.Move | DragDropEffects.None);
+                cardsList.Items.Refresh(); // Needed to refresh the visual offset of the dragged card
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Event when user drag a card over the ListBox
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void CardsList_DragEnterOver(object sender, DragEventArgs e)
+        {
+            e.Handled = true;
+
+            // Allow dropping only if it is a card (string)
+            if (e.Data.GetDataPresent(typeof(string))) // Data can be converted to string
+            {
+                string card = (string)e.Data.GetData(typeof(string));
+                string cardUnderscore = card.Replace(&#39; &#39;, &#39;_&#39;);
+                if (Enum.IsDefined(typeof(Card), cardUnderscore)) // Data can be converted to card
+                {
+                    e.Effects = DragDropEffects.Move;
+
+                    // Change the visual offset of the dragged card to the cursor position
+                    ListBoxItem item = (ListBoxItem)cardsList.ItemContainerGenerator.ContainerFromItem(card);
+                    Point cursorPositionCardsList = e.GetPosition(cardsList);
+                    item.GetType().GetProperty(&quot;VisualOffset&quot;, BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(item, new Vector(cursorPositionCardsList.X, cursorPositionCardsList.Y)); // VisualOffset is a protected property
+
+                    // Scroll the list if dragging near the top or bottom
+                    if (dragScrollAvailable)
+                    {
+                        const double scrollPercentage = 0.1; // If cursor is within this percentage of the top or bottom, scroll
+                        double maxHeightScrollTop = cardsList.ActualHeight * scrollPercentage;
+                        double minHeightScrollBottom = cardsList.ActualHeight * (1 - scrollPercentage);
+
+                        ScrollViewer scrollViewer = (ScrollViewer)VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(cardsList, 0), 0);
+                        if (cursorPositionCardsList.Y &lt; maxHeightScrollTop)
+                        {
+                            // Scroll to the top
+                            // ScrollToVerticalOffset allow values outside the range 0 to .ScrollableHeight
+                            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - 1);
+
+                            // Wait before allowing to scroll again
+                            WaitAllowScroll();
+                        }
+                        else if (cursorPositionCardsList.Y &gt; minHeightScrollBottom)
+                        {
+                            // Scroll to the bottom
+                            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + 1);
+
+                            WaitAllowScroll();
+                        }
+                    }
+
+                    return;
+                }
+            }
+
+            e.Effects = DragDropEffects.None;
+        }
+
+        /// &lt;summary&gt;
+        /// Method to reduce scrolling speed (to avoid scrolling too fast)
+        /// &lt;/summary&gt;
+        private void WaitAllowScroll()
+        {
+            // Only allow scrolling every 50ms
+            dragScrollAvailable = false;
+            new Thread(() =&gt; { Thread.Sleep(50); dragScrollAvailable = true; }).Start();
+        }
+
+        /// &lt;summary&gt;
+        /// Event when user drop a card in the ListBox
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void CardsList_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Effects != DragDropEffects.None)
+            {
+                string card = (string)e.Data.GetData(typeof(string));
+
+                // Get the index of the item on the cursor, to insert the card at this index
+                Point cursorPositionCardsList = e.GetPosition(cardsList);
+                IInputElement itemOnCursor = cardsList.InputHitTest(cursorPositionCardsList);
+                if (itemOnCursor != null)
+                {
+                    // Get the index of the item on the cursor
+                    DependencyObject listBoxItemDO = (DependencyObject)itemOnCursor;
+                    while (listBoxItemDO.GetType() != typeof(ListBoxItem))
+                    {
+                        listBoxItemDO = VisualTreeHelper.GetParent(listBoxItemDO);
+
+                        // If we can&#39;t get the ListBoxItem, stop the method
+                        if (listBoxItemDO == null)
+                        {
+                            return;
+                        }
+                    }
+                    int indexAtCursor = cardsList.ItemContainerGenerator.IndexFromContainer(listBoxItemDO);
+                    cardsList.Items.Remove(card); // Remove the dragged card from the list
+
+                    // If cursor is in the upper half, then insert the card &quot;on top&quot;, else insert &quot;below&quot;
+                    ListBoxItem listBoxItem = (ListBoxItem)listBoxItemDO;
+                    Point cursorPositionListBoxItem = e.GetPosition(listBoxItem); // Get cursor position relative to the item
+                    double listBoxItemHeight = listBoxItem.ActualHeight;
+                    if (cursorPositionListBoxItem.Y &lt; listBoxItemHeight / 2)
+                    {
+                        // Inserting the card on top of the item at the cursor position
+                        cardsList.Items.Insert(indexAtCursor, card);
+                    }
+                    else
+                    {
+                        // Check if we&#39;re not inserting below the last card (index out of range)
+                        if (cardsList.Items.Count &lt; indexAtCursor + 1)
+                        {
+                            // Inserting the card at the end of the list
+                            cardsList.Items.Add(card);
+                        }
+                        else
+                        {
+                            // Inserting the card below the item at the cursor position
+                            cardsList.Items.Insert(indexAtCursor + 1, card);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Event when a textBox is no longer focused by the user to change the text (placeholder) if empty
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;The textBox who lost focus&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == &quot;&quot;)
+            {
+                textBox.Foreground = Brushes.Gray;
+                if (textBox.Name == &quot;inputEncodeMessage&quot;)
+                {
+                    textBox.Text = &quot;Enter your message to encode&quot;;
+                }
+                else if (textBox.Name == &quot;inputDecodeMessage&quot;)
+                {
+                    textBox.Text = &quot;Enter your message to decode&quot;;
+                }
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Event when a textBox is focus by the user to change the text (placeholder) and the color
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;The textBox who get focus&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Foreground == Brushes.Gray)
+            {
+                textBox.Text = &quot;&quot;;
+                textBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(&quot;#FAFAFA&quot;));
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Method to get the key from the cards list
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;message&quot;&gt;the message to get the length to have same length in the key&lt;/param&gt;
+        /// &lt;returns&gt;Int table key&lt;/returns&gt;
+        private int[] GetKeyFromCardsList(string message)
+        {
+            // get all cards in ListBox
+            LinkedList&lt;Card&gt; cardsListLinkedList = new();
+
+            foreach (string card in cardsList.Items)
+            {
+                string cardUnderscore = card.Replace(&#39; &#39;, &#39;_&#39;);
+                cardsListLinkedList.AddLast(Enum.Parse&lt;Card&gt;(cardUnderscore));
+            }
+            deck = new Deck(cardsListLinkedList);
+
+            // create the key
+            int[] encodeKey = new int[message.Length];
+
+            for (int i = 0; i &lt; message.Length; i++)
+            {
+                bool readingBridgeNumberNotJokerOk = false;
+                while (!readingBridgeNumberNotJokerOk)
+                {
+                    deck.MoveCard(Card.Black_Joker, 1);
+                    deck.MoveCard(Card.Red_Joker, 2);
+                    deck.DoubleCutting();
+                    deck.SingleCuttingLastCard();
+                    readingBridgeNumberNotJokerOk = deck.ReadingBridgeNumberNotJoker();
+                }
+                int letterValue = deck.ReadingPseudoRandomLetters();
+                encodeKey[i] = letterValue;
+            }
+            return encodeKey;
+        }
+
+        /// &lt;summary&gt;
+        /// Event when the user click on the button to encode a message
+        /// Encode the message and display it in the associated textBox
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void ButtonEncodeMessage_Click(object sender, RoutedEventArgs e)
+        {
+            // Check if message exists
+            string message = inputEncodeMessage.Text;
+            if (message == &quot;&quot; || message == &quot;Enter your message to encode&quot;)
+            {
+                return;
+            }
+
+            // Encode
+            int[] encodeKey = GetKeyFromCardsList(message);
+            string encodedMessage = EncodeDecode.EncodeMessage(message, encodeKey);
+            inputDecodeMessage.Text = encodedMessage;
+            inputDecodeMessage.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(&quot;#FAFAFA&quot;));
+            inputEncodeMessage.Foreground = Brushes.Gray;
+
+
+            // Display in terminal
+            string key = &quot;&quot;;
+            for (int i = 0; i &lt; message.Length; i++)
+            {
+                key += EncodeDecode.IntToAlphabet(encodeKey[i]);
+            }
+            Console.WriteLine(&quot;----------------------&quot;);
+            Console.WriteLine(&quot;You encode a message&quot;);
+            Console.WriteLine(&quot;Original Message : &quot; + message);
+            Console.WriteLine(&quot;Key : &quot; + key);
+            Console.WriteLine(&quot;Encoded Message : &quot; + encodedMessage);
+        }
+
+        /// &lt;summary&gt;
+        /// Event when the user click on the button to decode a message
+        /// Decode the message and display it in the associated textBox
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void ButtonDecodeMessage_Click(object sender, RoutedEventArgs e)
+        {
+            // Check if message exists
+            string message = inputDecodeMessage.Text;
+            if (message == &quot;&quot; || message == &quot;Enter your message to decode&quot;)
+            {
+                return;
+            }
+
+            // Decode
+            int[] encodeKey = GetKeyFromCardsList(message);
+            string decodedMessage = EncodeDecode.DecodeMessage(message, encodeKey);
+            inputEncodeMessage.Text = decodedMessage;
+            inputEncodeMessage.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(&quot;#FAFAFA&quot;));
+            inputDecodeMessage.Foreground = Brushes.Gray;
+
+            // Display in terminal
+            string key = &quot;&quot;;
+            for (int i = 0; i &lt; message.Length; i++)
+            {
+                key += EncodeDecode.IntToAlphabet(encodeKey[i]);
+            }
+
+            Console.WriteLine(&quot;----------------------&quot;);
+            Console.WriteLine(&quot;You decode a message&quot;);
+            Console.WriteLine(&quot;Encoded Message : &quot; + message);
+            Console.WriteLine(&quot;Key : &quot; + key);
+            Console.WriteLine(&quot;Decoded Message : &quot; + decodedMessage);
+        }
+
+        /// &lt;summary&gt;
+        /// Event when the text change in a textBox to check if the text is valid (only uppercase letters)
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+
+            // Don&#39;t check the text if the text color is gray (placeholder)
+            if (textBox.Foreground != Brushes.Gray)
+            {
+                // Build the new text (uppercase letters only)
+                string currentText = textBox.Text;
+                StringBuilder newTextBuilder = new();
+                int removedCharacters = 0;
+                foreach (char letter in currentText)
+                {
+                    if (char.IsAsciiLetter(letter))
+                    {
+                        newTextBuilder.Append(char.ToUpperInvariant(letter));
+                    }
+                    else
+                    {
+                        removedCharacters++;
+                    }
+                }
+                string newText = newTextBuilder.ToString();
+
+                // If different than current text, apply the new text
+                if (currentText != newText)
+                {
+                    // Changing the text always call the TextChanged event,
+                    // so we temporarily change the text color to gray
+                    textBox.Foreground = Brushes.Gray;
+                    // Backup the current caret position to re-apply it with the correct position
+                    int caretPosition = textBox.CaretIndex;
+                    textBox.Text = newText;
+                    textBox.CaretIndex = caretPosition - removedCharacters;
+                    textBox.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(&quot;#FAFAFA&quot;));
+                }
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Event when the user click on the button to shuffle the cards in the listBox
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;&lt;/param&gt;
+        private void ButtonShuffle_Click(object sender, RoutedEventArgs e)
+        {
+            // get all cards in ListBox
+            LinkedList&lt;Card&gt; cardsListLinkedList = new();
+
+            foreach (string card in cardsList.Items)
+            {
+                string cardUnderscore = card.Replace(&#39; &#39;, &#39;_&#39;);
+                cardsListLinkedList.AddLast(Enum.Parse&lt;Card&gt;(cardUnderscore));
+            }
+
+            // Shuffle all cards
+            Random rnd = new();
+            cardsListLinkedList = new LinkedList&lt;Card&gt;(cardsListLinkedList.OrderBy(x =&gt; rnd.Next()));
+
+            // Reasign cards to ListBox
+            cardsList.Items.Clear();
+            foreach (Card c in cardsListLinkedList)
+            {
+                string cardSpace = c.ToString().Replace(&#39;_&#39;, &#39; &#39;);
+
+                cardsList.Items.Add(cardSpace);
+            }
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[22,9,22,35,0],[27,9,27,49,0],[32,9,32,28,0],[33,9,33,10,0],[35,13,35,35,0],[36,13,36,114,0],[38,13,38,20,0],[38,22,38,28,0],[38,29,38,31,0],[38,32,38,60,0],[39,13,39,14,0],[40,17,40,67,0],[41,17,41,48,0],[42,13,42,14,0],[43,9,43,10,0],[51,9,51,10,0],[52,13,52,48,0],[53,13,53,14,0],[54,17,54,117,0],[55,17,55,43,0],[56,13,56,14,0],[57,9,57,10,0],[65,9,65,10,0],[66,13,66,30,0],[69,13,69,55,0],[70,13,70,14,0],[71,17,71,70,0],[72,17,72,64,0],[73,17,73,66,0],[74,17,74,18,0],[75,21,75,54,0],[78,21,78,110,0],[79,21,79,78,0],[80,21,80,194,0],[83,21,83,45,0],[84,21,84,22,0],[86,25,86,95,0],[87,25,87,104,0],[89,25,89,137,0],[90,25,90,76,0],[91,25,91,26,0],[94,29,94,98,0],[97,29,97,47,0],[98,25,98,26,0],[99,30,99,84,0],[100,25,100,26,0],[102,29,102,98,0],[104,29,104,47,0],[105,25,105,26,0],[106,21,106,22,0],[108,21,108,28,0],[110,13,110,14,0],[112,13,112,46,0],[113,9,113,10,0],[119,9,119,10,0],[121,13,121,41,0],[122,13,122,30,0],[122,30,122,31,0],[122,31,122,32,0],[122,32,122,49,0],[122,49,122,50,0],[122,50,122,77,0],[122,77,122,78,0],[122,78,122,79,0],[122,79,122,89,0],[123,9,123,10,0],[131,9,131,10,0],[132,13,132,51,0],[133,13,133,14,0],[134,17,134,70,0],[137,17,137,74,0],[138,17,138,94,0],[139,17,139,42,0],[140,17,140,18,0],[142,21,142,85,0],[143,21,143,75,0],[144,21,144,22,0],[145,25,145,83,0],[148,25,148,51,0],[149,25,149,26,0],[150,29,150,36,0],[152,21,152,22,0],[153,21,153,108,0],[154,21,154,50,0],[157,21,157,74,0],[158,21,158,82,0],[159,21,159,73,0],[160,21,160,77,0],[161,21,161,22,0],[163,25,163,69,0],[164,21,164,22,0],[166,21,166,22,0],[168,25,168,71,0],[169,25,169,26,0],[171,29,171,55,0],[172,25,172,26,0],[174,25,174,26,0],[176,29,176,77,0],[177,25,177,26,0],[178,21,178,22,0],[179,17,179,18,0],[180,13,180,14,0],[181,9,181,10,0],[189,9,189,10,0],[190,13,190,47,0],[191,13,191,36,0],[192,13,192,14,0],[193,17,193,51,0],[194,17,194,58,0],[195,17,195,18,0],[196,21,196,67,0],[197,17,197,18,0],[198,22,198,63,0],[199,17,199,18,0],[200,21,200,67,0],[201,17,201,18,0],[202,13,202,14,0],[203,9,203,10,0],[211,9,211,10,0],[212,13,212,47,0],[213,13,213,52,0],[214,13,214,14,0],[215,17,215,35,0],[216,17,216,110,0],[217,13,217,14,0],[218,9,218,10,0],[226,9,226,10,0],[228,13,228,58,0],[230,13,230,20,0],[230,22,230,33,0],[230,34,230,36,0],[230,37,230,52,0],[231,13,231,14,0],[232,17,232,64,0],[233,17,233,79,0],[234,13,234,14,0],[235,13,235,50,0],[238,13,238,55,0],[240,18,240,27,0],[240,29,240,47,0],[240,49,240,52,0],[241,13,241,14,0],[242,17,242,60,0],[243,17,243,55,0],[244,17,244,18,0],[245,21,245,56,0],[246,21,246,54,0],[247,21,247,42,0],[248,21,248,50,0],[249,21,249,88,0],[250,17,250,18,0],[251,17,251,69,0],[252,17,252,44,0],[253,13,253,14,0],[254,13,254,30,0],[255,9,255,10,0],[264,9,264,10,0],[266,13,266,54,0],[267,13,267,76,0],[268,13,268,14,0],[269,17,269,24,0],[273,13,273,60,0],[274,13,274,84,0],[275,13,275,54,0],[276,13,276,117,0],[277,13,277,58,0],[281,13,281,29,0],[282,18,282,27,0],[282,29,282,47,0],[282,49,282,52,0],[283,13,283,14,0],[284,17,284,65,0],[285,13,285,14,0],[286,13,286,57,0],[287,13,287,55,0],[288,13,288,64,0],[289,13,289,47,0],[290,13,290,70,0],[291,9,291,10,0],[300,9,300,10,0],[302,13,302,54,0],[303,13,303,76,0],[304,13,304,14,0],[305,17,305,24,0],[309,13,309,60,0],[310,13,310,84,0],[311,13,311,54,0],[312,13,312,117,0],[313,13,313,58,0],[316,13,316,29,0],[317,18,317,27,0],[317,29,317,47,0],[317,49,317,52,0],[318,13,318,14,0],[319,17,319,65,0],[320,13,320,14,0],[322,13,322,57,0],[323,13,323,55,0],[324,13,324,63,0],[325,13,325,47,0],[326,13,326,70,0],[327,9,327,10,0],[335,9,335,10,0],[336,13,336,47,0],[339,13,339,52,0],[340,13,340,14,0],[342,17,342,51,0],[343,17,343,54,0],[344,17,344,43,0],[345,17,345,24,0],[345,26,345,37,0],[345,38,345,40,0],[345,41,345,52,0],[346,17,346,18,0],[347,21,347,52,0],[348,21,348,22,0],[349,25,349,78,0],[350,21,350,22,0],[352,21,352,22,0],[353,25,353,45,0],[354,21,354,22,0],[355,17,355,18,0],[356,17,356,60,0],[359,17,359,44,0],[360,17,360,18,0],[363,21,363,55,0],[365,21,365,60,0],[366,21,366,44,0],[367,21,367,76,0],[368,21,368,114,0],[369,17,369,18,0],[370,13,370,14,0],[371,9,371,10,0],[379,9,379,10,0],[381,13,381,58,0],[383,13,383,20,0],[383,22,383,33,0],[383,34,383,36,0],[383,37,383,52,0],[384,13,384,14,0],[385,17,385,64,0],[386,17,386,79,0],[387,13,387,14,0],[390,13,390,32,0],[391,13,391,89,0],[391,89,391,99,0],[391,99,391,102,0],[394,13,394,37,0],[395,13,395,20,0],[395,22,395,28,0],[395,29,395,31,0],[395,32,395,51,0],[396,13,396,14,0],[397,17,397,67,0],[399,17,399,48,0],[400,13,400,14,0],[401,9,401,10,0]]);
+    </script>
+  </body>
+</html>
