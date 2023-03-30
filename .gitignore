@@ -349,4 +349,8 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+
 desktop.ini
+
+# Unignore publish settings
+!CryptoSharp/Properties/PublishProfiles/FolderProfile.pubxml
