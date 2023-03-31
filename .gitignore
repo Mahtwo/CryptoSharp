@@ -354,3 +354,6 @@ desktop.ini
 
 # Unignore publish settings
 !CryptoSharp/Properties/PublishProfiles/FolderProfile.pubxml
+
+# Ignore the folder where the build is published
+Publish build/
